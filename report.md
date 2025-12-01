@@ -74,9 +74,24 @@ Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux déve
 
 ![alt text](images/windsurf_payment_plan.png)
 
+Sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows. Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
+
+Les rules permettent de définir des directives que l'IA doit suivre lors de la génération de code. Ces règles peuvent être configurées à deux niveaux :
+- **Global Rules**: Applicables à tous les projets de l'utilisateur, elles définissent des préférences personnelles comme le style de code ou les conventions de nommage.
+- **Project Rules**: Spécifiques à un projet, elles permettent d'établir des guidelines organisationnelles, comme des standards d'architecture, des patterns de sécurité ou des contraintes techniques propres à l'entreprise. Idéalement, chaque entreprise utilisant windsurf devrait définir un ensemble de Project Rules pour garantir la cohérence et la qualité du code généré par l'IA au sein de ses projets.
+
+Windsurf plusieurs modes d'application des rules, dont :
+- **Mode Always On**: Les rules sont systématiquement appliquées à chaque interaction avec l'IA, garantissant une conformité constante.
+- **Mode Model Decision**: L'IA décide de manière autonome quand appliquer les rules en fonction du contexte de la requête, offrant plus de flexibilité.
+
+Les workflows, quant à eux, permettent d'automatiser des tâches répétitives en créant des séquences d'actions guidées. Par exemple, un workflow de déploiement peut enchaîner automatiquement la vérification des tests, la construction de l'application, la génération de documentation et le déploiement sur l'environnement cible. L'utilisateur invoque le workflow comme une commande, et Windsurf guide ensuite le processus étape par étape, en demandant les paramètres nécessaires et en exécutant les actions définies.
+
+![alt text](images/windsurf_rules.png)
+![alt text](images/windsurf_workflow.png)
+
 ### Modèle GPT-5 (medium reasoning)
 
-
+- [https://www.vellum.ai/best-llm-for-coding?utm_source=google&utm_medium=organic](https://www.vellum.ai/best-llm-for-coding?utm_source=google&utm_medium=organic)
 
 ## PARTICIPANTS 
 ## COLLECTE DE DONNEES 
@@ -98,5 +113,7 @@ Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux déve
 - [https://github.com/opendidac/opendidac](https://github.com/opendidac/opendidac)
 - [https://windsurf.com/](https://windsurf.com/)
 - [https://windsurf.com/pricing](https://windsurf.com/pricing)
+- [https://medium.com/@wahengchang2024/mastering-windsurf-restricting-ai-output-with-windsurf-rules-d7e429654db2](https://medium.com/@wahengchang2024/mastering-windsurf-restricting-ai-output-with-windsurf-rules-d7e429654db2)
+- [https://www.paulmduvall.com/using-windsurf-rules-workflows-and-memories/](https://www.paulmduvall.com/using-windsurf-rules-workflows-and-memories/)
 
 # ANNEXES	
