@@ -92,6 +92,8 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 ### Modèle GPT-5 (medium reasoning)
 
 - [https://www.vellum.ai/best-llm-for-coding?utm_source=google&utm_medium=organic](https://www.vellum.ai/best-llm-for-coding?utm_source=google&utm_medium=organic)
+- [https://www.swebench.com/index.html](https://www.swebench.com/index.html)
+- [https://epoch.ai/benchmarks/gpqa-diamond](https://epoch.ai/benchmarks/gpqa-diamond)
 
 ## PARTICIPANTS 
 ## COLLECTE DE DONNEES 
