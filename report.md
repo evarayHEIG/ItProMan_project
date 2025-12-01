@@ -35,7 +35,49 @@ Le déploiement est une étape dans le SDLC qui peut être complexe et où plusi
 
 # METHODOLOGIE	
 ## APPROCHE PEDAGOGIQUE 
+
+Dans le cadre de ce projet, l'approche pédagogique adoptée est celle de la classe inversée. Cette méthode consiste à inverser les rôles traditionnels des étudiants et des enseignants. En effet, les étudiants se voient attribuer un thème lié au SDLC ou au PLC qu'ils doivent étudier afin de le présenter à leurs pairs et aux enseignants lors de sessions dédiées. En particulier, pour ce projet, les étudiants sont chargés d'explorer l'intégration de l'IA générative dans le processus de déploiement des systèmes informatiques. Le but est de tester et évaluer comment l'IA générative permet d'améliorer l'efficacité, la qualité et la gestion des projets IT à chaque étape de leur cycle de vie. Le côté pratique est mis en avant à travers des démonstrations des résultats obtenus, des analyses critiques et des discussions sur les bénéfices et défis rencontrés.
+
 ## OUTILS ET TECHNOLOGIES UTILISES 
+
+### OpenDidac
+
+Notre but étant de s'intéresser à la phase de déploiement, nous avons tout d'abord sélectionné une application web à déployer. Nous avons choisi l'application web ``OpenDidac``, qui est une plateforme open-source de gestion d'évaluation en ligne développée par l'HEIG-VD. En particulier, cette application permet aux enseignants de concevoir des questionnaires, aux étudiants de se connecter et de répondre aux évaluations, et enfin de récupérer les réponses aux questions pour analyse. Les questionnaires permettent plusieurs types de questions: vrai/faux, QCM, questions ouvertes, questions avec exécution de code ou encore des requêtes de bases de données. L'architecture de l'application est la suivante :
+- **Frontend**: Développé en Typescript avec le framework Next.js 14 pour React.
+- **Backend**: Développé en Typescript avec le framework Next.js API Routes.
+- **Base de données**: PostgreSQL avec modélisation gérée par l'ORM Prisma.
+- **Authentification**: Gestion des utilisateurs et des sessions avec NextAuth.js et keycloak.
+- **Conteneurisation**: Utilisation de Docker pour la création d'images et la gestion des conteneurs.
+
+Le but de ce projet est donc de déployer cette application web en utilisant différentes technologies d'infrastructure, en s'appuyant sur l'IA générative pour automatiser le processus de déploiement.
+
+### Kubernetes
+
+
+
+### Terraform
+
+
+
+### Windsurf
+
+Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. 
+
+![windsurf_ide](images/windsurf_chat.png)
+
+Windsurf offre l'accès à plusieurs modèles d'IA avec des capacités et des coûts variables :
+
+- **Modèle de base (SWE-1)**: Un modèle gratuit et illimité adapté aux tâches courantes de développement, permettant une utilisation quotidienne sans consommation de crédits.
+- **Modèles premium**: Ces modèles avancés offrent des performances supérieures en termes de compréhension contextuelle, de génération de code complexe et de raisonnement. Chaque requête utilisant un modèle premium consomme 1 crédit.
+
+Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux développeurs de tester les modèles premium pour des tâches nécessitant des capacités avancées ou pour comparer les performances entre les différents modèles. Des plans payants sont également disponibles pour les utilisateurs ayant des besoins plus importants en crédits. Le tarif d'entrée pour 500 crédits par mois pour un utilisateur est de 15 USD.
+
+![alt text](images/windsurf_payment_plan.png)
+
+### Modèle GPT-5 (medium reasoning)
+
+
+
 ## PARTICIPANTS 
 ## COLLECTE DE DONNEES 
 ## CRITERES D’EVALUATION 
@@ -53,5 +95,8 @@ Le déploiement est une étape dans le SDLC qui peut être complexe et où plusi
 # REFERENCES	
 
 - [https://content.startuplandia.io/thoughts/software-development-lifecycle/](https://content.startuplandia.io/thoughts/software-development-lifecycle/)
+- [https://github.com/opendidac/opendidac](https://github.com/opendidac/opendidac)
+- [https://windsurf.com/](https://windsurf.com/)
+- [https://windsurf.com/pricing](https://windsurf.com/pricing)
 
 # ANNEXES	
