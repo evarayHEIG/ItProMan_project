@@ -20,7 +20,7 @@ spec:
           image: quay.io/keycloak/keycloak:24.0.5
           imagePullPolicy: IfNotPresent
           args:
-            - "start"
+            - "start-dev"
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
@@ -32,26 +32,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-admin-secret
                   key: KEYCLOAK_ADMIN_PASSWORD
-            - name: KC_DB
-              value: "postgres"
-            - name: KC_DB_URL
-              value: "jdbc:postgresql://postgres:5432/eval-dev"
-            - name: KC_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_USER
-            - name: KC_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
-            - name: KC_HOSTNAME
-              value: "keycloak.local"
+            - name: KC_HOSTNAME_URL
+              value: "http://keycloak.local:8080"
             - name: KC_HOSTNAME_STRICT
               value: "false"
-            - name: KC_PROXY
-              value: "edge"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_HEALTH_ENABLED
