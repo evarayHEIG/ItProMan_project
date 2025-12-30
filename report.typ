@@ -119,7 +119,6 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 #show "Available": "Lien"
 #show link: l => underline(l)
 #bibliography("biblio.bib", title: "Bibliographie", style: "ieee", full: true)
-// TODO: rajouter liens des papers dans biblio.bib ! par samuel
 
 == Liens additionnels
 // ça se met pas dans une bibliographie les liens vers les outils
