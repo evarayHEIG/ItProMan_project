@@ -1,4 +1,4 @@
-# Terraform & Kubernetes — Conventions WinFSurf
+# Terraform & Kubernetes — Conventions WindSurf
 
 ## Structure du projet
 

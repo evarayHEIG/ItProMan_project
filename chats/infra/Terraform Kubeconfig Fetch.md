@@ -631,7 +631,6 @@ je vais le faire moi, t'as pas tout revert....
 *User accepted the command `terraform plan`*
 
 ### User Input
-
 tu peux enlever le root_block_device car je n'ai pas besoin et parce que j'ai pas les access dans mon compte et c'est unique pour du dev
 
 *Viewed [main.tf](file:///home/massimostefani/Master/ProjMang/projet/kubernetes/terraform/main.tf) *

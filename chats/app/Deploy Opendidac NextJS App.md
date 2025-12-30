@@ -303,7 +303,7 @@ kubectl delete -k kube/db
 ### User Input
 
 J'ai une erreur avec minikube, je n'arrive pas à le démarrer.
-
+```
 > minikube start
 😄  minikube v1.37.0 on Fedora 43 (vbox/amd64)
 ✨  Using the docker driver based on existing profile
@@ -312,20 +312,24 @@ J'ai une erreur avec minikube, je n'arrive pas à le démarrer.
 🏃  Updating the running docker "minikube" container ...
 
 ❌  Exiting due to RUNTIME_ENABLE: Failed to enable container runtime: docker not running
+```
 
 pourtant docker a l'air de bien tourner...
-systemctl status docker
+```
+> systemctl status docker
 ● docker.service - Docker Application Container Engine
      Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: disabled)
     Drop-In: /usr/lib/systemd/system/service.d
              └─10-timeout-abort.conf
      Active: active (running) since Tue 2025-12-02 00:33:10 CET; 1h 2min ago
-
+```
 et encore
+```
 > docker run hello-world
 
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
+```
 
 ### Planner Response
 
