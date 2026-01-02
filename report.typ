@@ -3,19 +3,27 @@
 #set par(justify: true)// Justify the text
 #show: page.with(header: "ITProMan", margin: 1.6cm,)
 
+// Display inline code in a small box with light gray backround that retains the correct baseline.
+#show raw.where(block: false): box.with(
+  fill: luma(240),
+  inset: (x: 3pt, y: 0pt),
+  outset: (y: 3pt),
+  radius: 2pt,
+)
+
 // BODY
 #text(size: 2em, weight: "bold")[Le déploiement IT en vibe-coding]
 
 #text(size: 1.2em)[Le meilleur moyen de supprimer la base de donnée en production ?]\
-#text(size: 1.2em)[Ou le miracle qui va retirer la galère des équipes de développement ?]
+#text(size: 1.2em)[Ou la fin de la galère pour les équipes de développement ?]
 
 #outline()
 
 #pagebreak()
 
-= RESUME
-= INTRODUCTION
-== CONTEXTE
+= Resume
+= Introduction
+== Contexte
 La gestion de projets informatiques nécessite des méthodologies structurées pour organiser le développement et le déploiement de systèmes d'information. Le Systems Development Life Cycle (SDLC), située dans la phase "Execute and Control Project" du Project Life-Cyle (PLC), représente le cycle de vie produit le plus utilisé dans le domaine des technologies de l'information. Ce cycle établit une séquence logique d'activités de développement organisées en phases distinctes : la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), et la maintenance et support (maintenance and support).
 
 #figure(image("images/sdlc_2.png"), caption: [ TODO ])
@@ -30,7 +38,7 @@ Chaque phase du SDLC présente des enjeux spécifiques.
 
 La maîtrise de ces phases et de leurs interdépendances constitue un facteur déterminant pour la gestion de projet IT, permettant d'assurer une progression ordonnée depuis l'identification d'un besoin jusqu'à la mise en production et le maintien opérationnel d'un système d'information.
 
-== OBJECTIF DU RAPPORT
+== Objectif du rapport
 Le déploiement constitue une activité critique de la phase d'implémentation du SDLC, consistant à mettre le système en production et à le rendre disponible aux utilisateurs finaux. L'intégration de l'IA générative dans le processus de déploiement peut offrir plusieurs avantages.
 
 - #strong[Automatisation de la création des fichiers de déploiement]: Beaucoup d'outils permettant de déployer des applications nécessitent la création de fichiers de configuration spécifiques (docker-compose.yml, Kubernetes YAML, etc.). L'IA générative peut automatiser la création de ces fichiers en fonction des spécifications du projet, réduisant ainsi le temps et les erreurs humaines.
@@ -38,7 +46,7 @@ Le déploiement constitue une activité critique de la phase d'implémentation d
 - #strong[Assistance à la résolution des problèmes]: Lors du déploiement, des problèmes techniques peuvent survenir. L'IA générative peut fournir une assistance en temps réel pour diagnostiquer et résoudre ces problèmes, en suggérant des solutions basées sur des bases de données de connaissances.
 - #strong[Automatisation de la documentation]: La documentation est essentielle pour le déploiement et la maintenance des systèmes. L'IA générative peut automatiser la création de documentation technique, facilitant ainsi la compréhension et l'utilisation du système par les équipes de développement et d'exploitation.
 
-== PROBLEMATIQUE
+== Problèmatique
 Le déploiement est une étape dans le SDLC qui peut être complexe et où plusieurs défis peuvent compromettre la mise en production.
 - #strong[Complexité des environnements hétérogènes]: Les systèmes sont souvent déployés sur des infrastructures variées (cloud multi-fournisseurs, hybride) avec des configurations et contraintes différentes, augmentant le risque d'incompatibilités et d'erreurs. L'IA générative peut analyser automatiquement les caractéristiques de chaque environnement cible et générer des scripts ou fichiers de déploiement adaptés, incluant la détection et la résolution de conflits de dépendances.
 - #strong[Gestion des fichiers de configuration]: La création et la gestion des fichiers de configuration peut être fastidieuses, chronophages et sujettes aux erreurs. L'IA générative peut automatiser la génération de ces fichiers en fonction des besoins spécifiques de chaque environnement, assurant ainsi une cohérence et une réduction des erreurs humaines.
@@ -46,11 +54,11 @@ Le déploiement est une étape dans le SDLC qui peut être complexe et où plusi
 - #strong[Gestion des erreurs]: Le déploiement peut échouer pour diverses raisons, et la détection rapide des erreurs est cruciale. L'IA générative peut analyser les logs de déploiement en temps réel, identifier les erreurs potentielles et proposer des solutions correctives basées sur des modèles d'apprentissage automatique.
 - #strong[Interruption de service]: Le déploiement nécessite souvent des interruptions de service impactant la disponibilité du système, particulièrement critique pour les systèmes en production 24/7. L'IA générative peut concevoir des stratégies de déploiement intelligentes (blue-green deployment, rolling updates) optimisant la séquence des opérations pour minimiser l'indisponibilité.
 
-= METHODOLOGIE
-== APPROCHE PEDAGOGIQUE
+= Méthodologie
+== Approche pédagogique
 Dans le cadre de ce projet, l'approche pédagogique adoptée est celle de la classe inversée. Cette méthode consiste à inverser les rôles traditionnels des étudiants et des enseignants. En effet, les étudiants se voient attribuer un thème lié au SDLC ou au PLC qu'ils doivent étudier afin de le présenter à leurs pairs et aux enseignants lors de sessions dédiées. En particulier, pour ce projet, les étudiants sont chargés d'explorer l'intégration de l'IA générative dans le processus de déploiement des systèmes informatiques. Le but est de tester et évaluer comment l'IA générative permet d'améliorer l'efficacité, la qualité et la gestion des projets IT à chaque étape de leur cycle de vie. Le côté pratique est mis en avant à travers des démonstrations des résultats obtenus, des analyses critiques et des discussions sur les bénéfices et défis rencontrés.
 
-== OUTILS ET TECHNOLOGIES UTILISES
+== Outils et technologies utilises
 <outils-et-technologies-utilises>
 === OpenDidac
 <opendidac>
@@ -100,21 +108,31 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 - #link("https://www.swebench.com/index.html")
 - #link("https://epoch.ai/benchmarks/gpqa-diamond")
 
-== PARTICIPANTS
-== COLLECTE DE DONNEES
-== CRITERES D'EVALUATION
-= REFERENCES
-= RESULTATS ET ANALYSES
-== PHASE DE DEPLOIEMENT
-== SYNTHESE DES RESULTATS
-= DISCUSSION
-== BENEFICES OBSERVES
-== DEFIS RENCONTRES
-== RETOUR D'EXPERIENCE DU GROUPE
-== COMPARAISON AVEC D'AUTRES APPROCHES OU PRATIQUES
-= CONCLUSION
-= RECOMMANDATIONS
-= REFERENCES
+== Participants
+== Collecte de données
+== Critères d'evaluation
+= Références
+= Résultats et analyses
+== Phase de déploiement
+== Synthèse des resultats
+= Discussion
+== Bénéfices observés
+== Défis rencontrés
+== Retour d'expérience du groupe
+== Comparaison avec d'autres approches ou pratiques
+
+Comme le montre la @ialevels, nous avons défini 6 niveaux d'adoption de l'IA, pour cette comparaison. Tout à gauche, le niveau d'adoption zéro, sans aucune aide d'intelligence artificielle. Ensuite, nous avons les chatbot en ligne qui regroupent ChatGPT, Copilat Chat, et beaucoup d'autres. Ils sont accessibles via des sites web et permettent souvent de choisir entre différents LLM mises à disposition. Ces chatbots en ligne n'ont comme contexte que l'historique de conversation des messages fournis, et peuvent parfois faire également des recherches sur le web. Leur réponse ne peut être donnée quand dans l'interface de chat, leur changements doivent donc être intégrés à la main. Dans le contexte d'une base de code existante comme Opendidac, il aurait fallu lui donner le contenu de certains fichiers qui nous semblent pertinents, pour qu'il puisse comprendre la structure de l'application.
+
+Pour donner par défaut accès à suffisament de contexte, nous avons choisi l'option des IDE dédié, comme Cursor et Windsurf. En effet, le mode agent de Windsurf peut de lui-même décider d'aller lire les fichiers du projets qui lui sont utiles, afin de comprendre le projet ouvert dans l'IDE. Une fois l'architecture identifiée, il peut modifier des fichiers dans n'importe quelle partie du projet. Un panneau de conversation est intégré et permet de demander des modifications.
+#figure(image("schemas/ia-levels.png"), caption: [Niveaux d'adoption de l'IA, avec notre approche en bleu]) <ialevels>
+
+Les dernières approches qui poussent encore plus loin l'intégration sont les flottes d'agents en parallèle et les serveurs MCP. Nous n'avons exploré pas ces outils, pour limiter le temps de configuration et d'apprentissage, mais ils pourraient fournir une meilleure expérience. Au lieu d'avoir un seul agent, pourquoi ne pas en avoir plusieurs, avec différents rôles, pour gérer les étapes, découper en tâches, coder, revoir le résultat, tester le déploiement... Ces systèmes de flottes permettent de simuler les rôles d'une équipe de développement, pour résoudre des tâches plus complexes et une meilleure qualité finale. #footnote([Voir par exemple CrewAI: #link("https://www.crewai.com/")])
+
+L'autre option qui n'est pas incompatible avec la précédente, consiste à donner accès à des outils ou ressources avancées via des serveurs MCP (Model Context Protocol) @ModelcontextprotocolDocs. Nous aurions pu utiliser un serveur MCP pour Kubernetes, permettant à notre LLM d'accéder à l'état du cluster et de créer des ressources, sans avoir de CLIs installés sur nos machines. Au lieu de nous donner des commandes `kubectl` pour lancer les services, pods et autres fichiers définis, une intégration d'un serveur MCP aurait pu permettre de lancer ces actions tout seul (après certaines approbations). #footnote(link("https://github.com/containers/kubernetes-mcp-server/"))
+
+= Conclusion
+= Recommandations
+= Références
 #show "Online": "En ligne"
 #show "Available": "Lien"
 #show link: l => underline(l)
@@ -124,6 +142,7 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 // ça se met pas dans une bibliographie les liens vers les outils
 - Repository Git de Opendidac: #link("https://github.com/opendidac/opendidac")
 - Windsurf website: #link("https://windsurf.com/")
-- Windsurf pricing page: #link("https://windsurf.com/pricing")
+- Windsurf options d'abonnements: #link("https://windsurf.com/pricing")
+- Serveur MCP pour Kubernetes: #link("https://github.com/containers/kubernetes-mcp-server/")
 
-= ANNEXES
+= Annexes
