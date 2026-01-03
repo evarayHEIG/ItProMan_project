@@ -15,7 +15,9 @@
 // Page de garde
 #set page(header: none, margin: 2cm)
 
-#place(top + left, image("assets/hes-so.png", width: 5cm))
+// logos mse et hes-so
+#place(top + left, image("images/mse.png", width: 8cm))
+#place(bottom + right, image("images/hes-so.png", width: 4cm))
 
 #align(center)[
 
@@ -49,6 +51,8 @@
   
 ]
 
+
+
 #pagebreak()
 
 #set page(header: "ITProMan", margin: 2cm, numbering: "1")
@@ -59,11 +63,14 @@
 #pagebreak()
 
 = Resume
+
+#pagebreak()
+
 = Introduction
 == Contexte
 La gestion de projets informatiques nécessite des méthodologies structurées pour organiser le développement et le déploiement de systèmes d'information. Le Systems Development Life Cycle (SDLC), située dans la phase "Execute and Control Project" du Project Life-Cyle (PLC), représente le cycle de vie produit le plus utilisé dans le domaine des technologies de l'information. Ce cycle établit une séquence logique d'activités de développement organisées en phases distinctes : la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), et la maintenance et support (maintenance and support).
 
-#figure(image("images/sdlc_2.png"), caption: [ TODO ])
+#figure(image("images/sdlc.png", width: 60%), caption: [ SDLC en 7 phases ])
 
 Chaque phase du SDLC présente des enjeux spécifiques.
 
@@ -83,7 +90,7 @@ Le déploiement constitue une activité critique de la phase d'implémentation d
 - #strong[Assistance à la résolution des problèmes]: Lors du déploiement, des problèmes techniques peuvent survenir. L'IA générative peut fournir une assistance en temps réel pour diagnostiquer et résoudre ces problèmes, en suggérant des solutions basées sur des bases de données de connaissances.
 - #strong[Automatisation de la documentation]: La documentation est essentielle pour le déploiement et la maintenance des systèmes. L'IA générative peut automatiser la création de documentation technique, facilitant ainsi la compréhension et l'utilisation du système par les équipes de développement et d'exploitation.
 
-== Problèmatique
+== Problématique
 Le déploiement est une étape dans le SDLC qui peut être complexe et où plusieurs défis peuvent compromettre la mise en production.
 - #strong[Complexité des environnements hétérogènes]: Les systèmes sont souvent déployés sur des infrastructures variées (cloud multi-fournisseurs, hybride) avec des configurations et contraintes différentes, augmentant le risque d'incompatibilités et d'erreurs. L'IA générative peut analyser automatiquement les caractéristiques de chaque environnement cible et générer des scripts ou fichiers de déploiement adaptés, incluant la détection et la résolution de conflits de dépendances.
 - #strong[Gestion des fichiers de configuration]: La création et la gestion des fichiers de configuration peut être fastidieuses, chronophages et sujettes aux erreurs. L'IA générative peut automatiser la génération de ces fichiers en fonction des besoins spécifiques de chaque environnement, assurant ainsi une cohérence et une réduction des erreurs humaines.
@@ -146,6 +153,16 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 - #link("https://epoch.ai/benchmarks/gpqa-diamond")
 
 == Participants
+
+Ce projet a été réalisé par trois étudiants de l'orientation Computer Science du Master of Science in Engineering (MSE) de la HES-SO. Les membres sont tous des ingénieurs détenteurs d'un Bachelor of Science en informatique et systèmes de communication avec une orientation en informatique logicielle, délivré par la HEIG-VD. Les participants sont Eva Ray, Samuel Roland et Massimo Stefani.
+
+Les trois membres ont suivi un cours de cloud computing durant leur Bachelor et suivent actuellement une version avancée de ce cours dans le cadre de leur Master. Ainsi, ils possèdent tous des connaissances de base en déploiement d'applications cloud. Cependant, Samuel et Eva sont débutants en Kubernetes et Terraform, tandis que Massimo a une solide expérience de ces outils qu'ils a utilisés dans des projets professionnels antérieurs, ainsi que son travail de Bachelor.
+
+Pour ce projet, le travail a été divisé en trois parties, de la manière suivante :
+- Eva Ray : Déploiement Kubernetes de la base de données PostgreSQL et de keycloak
+- Samuel Roland : Déploiement Kubernetes de l'application web OpenDidac
+- Massimo Stefani : Déploiement Terraform de l'infrastructure Kubernetes sur AWS
+
 == Collecte de données
 == Critères d'evaluation
 = Références
