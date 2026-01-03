@@ -136,7 +136,7 @@ Le but de ce projet est donc de déployer cette application web en utilisant dif
 === Kubernetes
 === Terraform
 === Windsurf
-Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE.
+Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf #ref(<Windsurf>). Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet grâce à un accès complet au contexte. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. Pour atteindre le résultat souhaité, l'utilisateur n'a qu'à formuler une demande en langage naturel dans le panneau de conversation intégré, et l'IA se charge de déterminer les actions nécessaires pour accomplir la tâche.
 
 #figure(image("images/windsurf_chat.png"), caption: [ Aperçu de l'interface de Windsurf avec les fichiers et le code à gauche, et la conversation et les configurations à droite])
 
@@ -145,24 +145,31 @@ Windsurf offre l'accès à plusieurs modèles d'IA avec des capacités et des co
 - #strong[Modèle de base (SWE-1)]: Un modèle gratuit et illimité adapté aux tâches courantes de développement, permettant une utilisation quotidienne sans consommation de crédits.
 - #strong[Modèles premium]: Ces modèles avancés offrent des performances supérieures en termes de compréhension contextuelle, de génération de code complexe et de raisonnement. Chaque requête utilisant un modèle premium consomme 1 crédit.
 
-Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux développeurs de tester les modèles premium pour des tâches nécessitant des capacités avancées ou pour comparer les performances entre les différents modèles. Des plans payants sont également disponibles pour les utilisateurs ayant des besoins plus importants en crédits. Le tarif d'entrée pour 500 crédits par mois pour un utilisateur est de 15 USD.
+Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux développeurs de tester les modèles premium pour des tâches nécessitant des capacités avancées ou pour comparer les performances entre les différents modèles. Des plans payants sont également disponibles pour les utilisateurs ayant des besoins plus importants en crédits. Le tarif d'entrée pour 500 crédits par mois pour un utilisateur est de 15 USD. #ref(<WindsurfPricing>)
 
-#figure(image("images/windsurf_payment_plan.png"), caption: [ Plans de paiements de Windsurf, en décembre 2025 ])
+#figure(image("images/windsurf_payment_plan.png", width: 90%), caption: [ Plans de paiements de Windsurf, en décembre 2025 ])
 
-Sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows. Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
+Sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows #ref(<UsingWindsurfRulesWorkflowsAndMemories>). Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
 
-Les rules permettent de définir des directives que l'IA doit suivre lors de la génération de code. Ces règles peuvent être configurées à deux niveaux :
+Les rules permettent de définir des directives que l'IA doit suivre lors de la génération de code. Ces règles peuvent être configurées à deux niveaux #ref(<UsingWindsurfRulesWorkflowsAndMemories>) :
 - #strong[Global Rules]: Applicables à tous les projets de l'utilisateur, elles définissent des préférences personnelles comme le style de code ou les conventions de nommage.
 - #strong[Project Rules]: Spécifiques à un projet, elles permettent d'établir des guidelines organisationnelles, comme des standards d'architecture, des patterns de sécurité ou des contraintes techniques propres à l'entreprise. Idéalement, chaque entreprise utilisant windsurf devrait définir un ensemble de Project Rules pour garantir la cohérence et la qualité du code généré par l'IA au sein de ses projets.
 
-Windsurf plusieurs modes d'application des rules, dont :
+Windsurf plusieurs modes d'application des rules, dont #ref(<UsingWindsurfRulesWorkflowsAndMemories>):
 - #strong[Mode Always On]: Les rules sont systématiquement appliquées à chaque interaction avec l'IA, garantissant une conformité constante.
 - #strong[Mode Model Decision]: L'IA décide de manière autonome quand appliquer les rules en fonction du contexte de la requête, offrant plus de flexibilité.
 
-Les workflows, quant à eux, permettent d'automatiser des tâches répétitives en créant des séquences d'actions guidées. Par exemple, un workflow de déploiement peut enchaîner automatiquement la vérification des tests, la construction de l'application, la génération de documentation et le déploiement sur l'environnement cible. L'utilisateur invoque le workflow comme une commande, et Windsurf guide ensuite le processus étape par étape, en demandant les paramètres nécessaires et en exécutant les actions définies.
+Les workflows, quant à eux, permettent d'automatiser des tâches répétitives en créant des séquences d'actions guidées. Par exemple, un workflow de déploiement peut enchaîner automatiquement la vérification des tests, la construction de l'application, la génération de documentation et le déploiement sur l'environnement cible. L'utilisateur invoque le workflow comme une commande dans la conversation, et Windsurf guide ensuite le processus étape par étape, en demandant les paramètres nécessaires et en exécutant les actions définies.
 
-#box(image("images/windsurf_rules.png"))
-#box(image("images/windsurf_workflow.png"))
+#figure(
+  grid(
+    columns: (1fr, 1fr),
+    gutter: 1em,
+    image("images/windsurf_rules.png", width: 100%),
+    image("images/windsurf_workflow.png", width: 100%)
+  ),
+  caption: [Onglets des rules (à gauche) et des workflows (à droite) dans Windsurf]
+)
 
 === Modèle GPT-5 (medium reasoning)
 <modèle-gpt-5-medium-reasoning>
@@ -178,7 +185,7 @@ Les trois membres ont suivi un cours de cloud computing durant leur Bachelor et 
 
 Pour ce projet, le travail a été divisé en trois parties, de la manière suivante :
 - Eva Ray : Déploiement Kubernetes de la base de données PostgreSQL et de keycloak
-- Samuel Roland : Déploiement Kubernetes de l'application web OpenDidac
+- Samuel Roland : Déploiement Kubernetes de l'application web d'OpenDidac
 - Massimo Stefani : Déploiement Terraform de l'infrastructure Kubernetes sur AWS
 
 == Collecte de données
