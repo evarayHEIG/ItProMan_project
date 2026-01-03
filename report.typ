@@ -68,17 +68,23 @@
 
 = Introduction
 == Contexte
-La gestion de projets informatiques nécessite des méthodologies structurées pour organiser le développement et le déploiement de systèmes d'information. Le Systems Development Life Cycle (SDLC), située dans la phase "Execute and Control Project" du Project Life-Cyle (PLC), représente le cycle de vie produit le plus utilisé dans le domaine des technologies de l'information. Ce cycle établit une séquence logique d'activités de développement organisées en phases distinctes : la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), et la maintenance et support (maintenance and support).
+La gestion de projets informatiques nécessite des méthodologies structurées pour organiser le développement et le déploiement de systèmes d'information. Le Systems Development Life Cycle (SDLC) représente le cycle de vie produit le plus utilisé dans le domaine des technologies de l'information. Celui-ci est situé dans la phase "Execute and Control Project" du Project Life-Cyle (PLC) et a pour objectif de mener à bien un projet IT de A à Z.
 
-#figure(image("images/sdlc.png", width: 60%), caption: [ SDLC en 7 phases ])
+#figure(image("images/plc.png", width: 75%), caption: [ Position du SDLC dans le PLC ])
 
-Chaque phase du SDLC présente des enjeux spécifiques.
+ Le cycle SDLC établit une séquence logique d'activités de développement organisées en phases distinctes. Plusieurs variantes du SDLC existent mais nous allons nous concentrer sur la version en 7 phases, puisque ce rapport porte sur l'intégration de l'IA générative dans le processus de déploiement IT. Les 7 phases du SDLC sont les suivantes: la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), le test (testing), le déploiement (deployment) et la maintenance (maintenance) #ref(<SDLCphases>).
 
-- La phase de planification se caractérise par sa forte dépendance aux livrables de la phase précédente du PLC et peut se décliner selon trois situations : une planification complète et imposée par le client (date, budget et fonctionnalités), une absence de planification préalable nécessitant une proposition complète du prestataire IT, ou une situation intermédiaire où seul le périmètre fonctionnel est défini. Cette phase distingue les projets feature-driven, typiquement internes avec flexibilité sur les délais, des projets date-driven, généralement externalisés avec flexibilité sur le périmètre fonctionnel.
-- L'analyse englobe l'analyse du business, des utilisateurs, des technologies, des travaux antérieurs et de la faisabilité du projet. Cette phase produit la Software Requirements Specification (SRS), document décrivant le système logiciel à développer en détaillant les exigences fonctionnelles et non-fonctionnelles, pouvant inclure des cas d'utilisation, la définition des utilisateurs, des activités utilisateur et des contraintes métier.
-- La conception élabore l'architecture des différentes parties du système selon une approche hiérarchique de décomposition en composants et modules. Cette phase définit la conception système, les interfaces, les bases de données et fichiers, ainsi que la conception des programmes, en sélectionnant la pile technologique (technology stack) appropriée. Le résultat est une description formelle et une représentation du système complet consignée dans un document de spécification détaillé.
-- L'implémentation concrétise cette architecture par le développement, l'intégration, les tests, l'installation du système, ainsi que la formation et la documentation nécessaires à son utilisation.
-- La phase de maintenance et support assure la pérennité du système en production, gérant les corrections d'erreurs, les améliorations fonctionnelles et l'adaptation aux évolutions de l'environnement organisationnel.
+#figure(image("images/sdlc.png", width: 55%), caption: [ SDLC en 7 phases ])
+
+Chaque phase du SDLC a un but bien précis. #ref(<SDLCphases>) #ref(<CourseBookITProMan>)
+
+- #strong[Planification]: Cette phase dépend fortement des livrables précédents et peut se décliner selon trois situations : une planification complète et imposée par le client (date, budget et fonctionnalités), une absence de planification préalable nécessitant une proposition complète du prestataire IT, ou une situation intermédiaire où seul le périmètre fonctionnel est défini. Cette phase distingue les projets feature-driven (flexibilité temporelle) des projets date-driven (flexibilité fonctionnelle).
+- #strong[Analyse]: L'analyse englobe l'analyse du business, des utilisateurs, des technologies, des travaux antérieurs et de la faisabilité du projet. Cette phase produit la Software Requirements Specification (SRS), document décrivant précisément les exigences fonctionnelles et non-fonctionnelles..
+- #strong[Conception]: La conception définit l’architecture du système par décomposition en composants, précise interfaces, données et choix technologiques, et fournit une spécification détaillée du système.
+- #strong[Implémentation]: L'implémentation concrétise cette architecture par le développement, l'intégration, les tests, l'installation du système, ainsi que la formation et la documentation nécessaires à son utilisation.
+- #strong[Test]: La phase de test a pour but de valider que le système développé a la qualité attendue pour la production. Elle inclut des tests unitaires, d'intégration, de système et d'acceptation utilisateur.
+- #strong[Déploiement]: C'est pendant la phase de déploiement que le logiciel développé est mis à disposition des utilisateurs finaux. Cela marque le passage du développement et des tests à l'exploitation réelle du système comme un produit opérationnel. Le déploiement comprend plusieur étapes clés, telles que le choix de la stratégie de déploiement, la préparation de l'environnement de production, la migration des données, la configuration du système, la formation des utilisateurs et le lancement officiel du logiciel. #ref(<TeachingagileSdlc>) Un déploiement réussi nécessite une planification minutieuse pour minimiser les interruptions de service et garantir une transition fluide vers le nouvel environnement. Il est aussi important que des procédures de retour en arrière soient en place au cas où des problèmes imprévus surviendraient après le lancement. Dans ce projet, nous nous concentrons sur cette phase de déploiement.
+- #strong[Maintenance]: La phase de maintenance assure la pérennité du système en production, gérant les corrections d'erreurs, les améliorations fonctionnelles et l'adaptation aux évolutions de l'environnement organisationnel.
 
 La maîtrise de ces phases et de leurs interdépendances constitue un facteur déterminant pour la gestion de projet IT, permettant d'assurer une progression ordonnée depuis l'identification d'un besoin jusqu'à la mise en production et le maintien opérationnel d'un système d'information.
 
@@ -147,7 +153,7 @@ Windsurf offre l'accès à plusieurs modèles d'IA avec des capacités et des co
 
 Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux développeurs de tester les modèles premium pour des tâches nécessitant des capacités avancées ou pour comparer les performances entre les différents modèles. Des plans payants sont également disponibles pour les utilisateurs ayant des besoins plus importants en crédits. Le tarif d'entrée pour 500 crédits par mois pour un utilisateur est de 15 USD. #ref(<WindsurfPricing>)
 
-#figure(image("images/windsurf_payment_plan.png", width: 90%), caption: [ Plans de paiements de Windsurf, en décembre 2025 ])
+#figure(image("images/windsurf_payment_plan.png", width: 85%), caption: [ Plans de paiements de Windsurf, en décembre 2025 ])
 
 Sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows #ref(<UsingWindsurfRulesWorkflowsAndMemories>). Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
 
@@ -222,7 +228,7 @@ Quelques articles académiques récents explorant l'utilisation de l'IA généra
 
 Ces deux articles nous mènent à la conclusion que l'IA générative a un potentiel significatif pour automatiser la création de code d'infrastructure mais qu'il faut privilégier des approches itératives pour atteindre des résultats déployables. 
 
-== Benchmarks de comparaison des modèles d'IA
+== Benchmarks de comparaison des modèles d'IA générative
 
 Quelques benchmarks récents comparent les performances des modèles d'IA générative pour des tâches de programmation et nous ont aidé à choisir le modèle le plus adapté pour notre projet (voir la section <modèle-gpt-5-medium-reasoning>):
 - #strong[Aider Polyglot] #link("https://aider.chat/docs/leaderboards/")
@@ -278,7 +284,7 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 #strong[Pour Terraform :]
 - Le seul bénéfice observé est le gain de temps initial pour la création des fichiers de configuration Terraform.
 
-#strong[Synthèse]
+#strong[Synthèse :]
 
 #table(
   columns: (auto, 1fr),
