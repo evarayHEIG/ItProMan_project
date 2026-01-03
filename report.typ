@@ -15,11 +15,11 @@
 // Page de garde
 #set page(header: none, margin: 2cm)
 
-#place(top + left, image("assets/hes-so.png", width: 4cm))
+#place(top + left, image("assets/hes-so.png", width: 5cm))
 
 #align(center)[
 
-  #v(7cm)
+  #v(8cm)
   
   #text(size: 2.5em, weight: "bold")[
     Déploiement IT en "vibe-coding"
