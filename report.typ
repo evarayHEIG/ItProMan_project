@@ -173,9 +173,22 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 
 === Modèle GPT-5 (medium reasoning)
 <modèle-gpt-5-medium-reasoning>
-- #link("https://www.vellum.ai/best-llm-for-coding")
-- #link("https://www.swebench.com/index.html")
-- #link("https://epoch.ai/benchmarks/gpqa-diamond")
+
+Pour ce projet, le modèle d'IA générative utilisé est GPT-5 (medium reasoning), lancé par OpenAi le 7 aoùt 2025. Le choix de ce modèle a été appuyé par plusieurs benchmarks démontrant de ses bonnes performances dans des tâches de programmation et de raisonnement complexe, le rendant parfaitement adapté au développement en mode agentique. En particulier, les benchmarks suivant ont été consultés :
+- #strong[Aider Polyglot]: Un benchmark open-source évaluant les capacités de différents modèles LLM à suivre des instructions et à modifier du code correctement sans intervention humaine. GPT-5 (medium reasoning) est classé comme second meilleur modèle dans ce benchmark à la date du 12 décembre 2025. #ref(<AiderDocs>)
+- #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé dans l'évaluation des modèles LLM pour leur capacités à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. #ref(<WwwWebsite>)
+
+#figure(
+  grid(
+    columns: (1fr, 1fr),
+    gutter: 1em,
+    image("images/aider_polyglot.png", width: 100%),
+    image("images/swe.png", width: 100%)
+  ),
+  caption: [Résultats de benchmarks pour GPT-5 medium reasoning dans Aider Polyglot (à gauche) et  SWE (à droite)]
+)
+
+Plusieurs modèles ont de meilleurs résultats dans ces benchmarks, mais ils ne sont pas disponibles dans le tiers gratuit de Windsurf, ou alors ils sont trop coûteux en crédits pour être utilisés dans le cadre de ce projet. Il est cependant intéressant de noter qu'entre le moment où  le projet a été réalisé (novembre-décembre 2025) et la rédaction de ce rapport (janvier 2026), OpenAI a lancé un nouveau modèle, GPT-5.2, qui surpasse largement les performances de GPT-5 (medium reasoning) dans le benchmark SWE, les résultats pour Aider Polyglot n'étant pas encore disponibles. Cela met en avant la rapidité d'évolution des modèles d'IA générative et souligne l'importance de rester à jour avec les dernières avancées pour maximiser les bénéfices dans les projets futurs.
 
 == Participants
 
