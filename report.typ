@@ -1,7 +1,7 @@
 // STYLE
-#show: text.with(font: "Lora")
+#set text(lang: "fr")
+#show: text.with(font: "New Computer Modern", size: 11pt)
 #set par(justify: true)// Justify the text
-#show: page.with(header: "ITProMan", margin: 1.6cm,)
 
 // Display inline code in a small box with light gray backround that retains the correct baseline.
 #show raw.where(block: false): box.with(
@@ -12,10 +12,47 @@
 )
 
 // BODY
-#text(size: 2em, weight: "bold")[Le déploiement IT en vibe-coding]
+// Page de garde
+#set page(header: none, margin: 2cm)
 
-#text(size: 1.2em)[Le meilleur moyen de supprimer la base de donnée en production ?]\
-#text(size: 1.2em)[Ou la fin de la galère pour les équipes de développement ?]
+#place(top + left, image("assets/hes-so.png", width: 4cm))
+
+#align(center)[
+
+  #v(7cm)
+  
+  #text(size: 2.5em, weight: "bold")[
+    Déploiement IT en "vibe-coding"
+  ]
+  
+  #text(size: 1.3em)[
+    Chaos ou automatisation : l'IA générative face aux défis du déploiement IT
+  ]
+  
+  
+  #v(2cm)
+  
+  #text(size: 1.1em)[
+    Management des Projets IT\
+    MSE
+  ]
+
+  #v(1.5cm)
+  
+  #text(size: 1.1em)[Eva Ray, Samuel Roland, Massimo Stefani
+  ]
+  
+  #text(size: 1em, lang: "fr")[
+    #datetime.today().display("[day padding:none] Janvier [year]")
+  ]
+
+  
+]
+
+#pagebreak()
+
+#set page(header: "ITProMan", margin: 2cm, numbering: "1")
+#counter(page).update(1)
 
 #outline()
 
