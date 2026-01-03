@@ -204,6 +204,38 @@ Pour ce projet, le travail a été divisé en trois parties, de la manière suiv
 == Collecte de données
 == Critères d'evaluation
 = Références
+
+== Exploration des outils d'IA pour le déploiement IT
+
+Plusieurs outils d'IA générative ont été envisagés:
+- #strong[Windsurf] #link("https://windsurf.com/"): Outil choisi pour ce projet, car il permet un mode agent avec accès complet au contexte du projet dans un IDE.
+- #strong[Cursor] #link("https://cursor.com/"): Outil similaire à Windsurf, mais avec moins de fonctionnalités avancées pour le mode agent, n'a pas été retenu.
+- #strong[GitHub Copilot] #link("https://github.com/features/copilot"): Assitant de code intégré dans plusieurs IDE, pas retenu car pas facilement accès au contexte complet du projet.
+ 
+
+== Recherches académiques sur le déploiement IT avec l'IA générative
+
+Quelques articles académiques récents explorant l'utilisation de l'IA générative pour le déploiement IT nous ont permis d'avoir un aperçu des avancées dans ce domaine:
+
+- #strong[Multi-Agent Code-Orchestrated Generation for Reliable Infrastructure-as-Code] #link("https://arxiv.org/abs/2510.03902"): Ce travail présente MACOG, une architecture multi-agents destinée à générer du code IaC fiable à partir de descriptions en langage naturel. Les approches classiques en génération unique produisent fréquemment erreurs syntaxiques, violations de politiques et conceptions peu robustes. MACOG répartit la tâche entre des agents spécialisés (architecture, harmonisation fournisseur, ingénierie, revue, sécurité, coûts/capacité, DevOps, mémoire), coordonnés via un tableau partagé et un orchestrateur à états finis, afin de produire des configurations Terraform cohérentes, valides et conformes aux règles. Le système intègre Terraform Plan pour vérifier la validité d’exécution et OPA pour appliquer des politiques personnalisées. Testé sur IaC-Eval, MACOG apporte les meilleures améliorations : par exemple, GPT-5 passe de 54,90 (avec RAG) à 74,02, et Gemini-2.5 Pro de 43,56 à 60,13, avec des hausses simultanées sur BLEU, CodeBERTScore et une évaluation par LLM. Les ablations montrent que le décodage contraint et le retour de déploiement sont essentiels : leur suppression fait chuter les scores à 64,89 et 56,93.
+- #strong[Deployability-Centric Infrastructure-as-Code Generation: An LLM-based Iterative Framework] #link("https://arxiv.org/abs/2506.05623"): Cette étude présente un cadre fondé sur des LLM pour générer automatiquement des templates IaC réellement déployables à partir de descriptions en langage naturel. Les approches existantes se limitent surtout à la vérification syntaxique, alors que la déployabilité est l’enjeu principal. Les auteurs introduisent deux apports : IaCGen, un système itératif qui améliore progressivement les templates jusqu’à ce qu’ils se déploient, et DPIaC-Eval, un benchmark de 153 scénarios mesurant syntaxe, déploiement, intention utilisateur et sécurité. Les modèles actuels (Claude-3.5, Claude-3.7) ne dépassent pas 30 % de déploiements réussis au premier essai. Avec IaCGen, ils franchissent 90 % après 25 itérations et atteignent jusqu’à 98 %. Malgré ces progrès, l’alignement avec l’intention (25,2 %) et la conformité sécurité (8,4 %) restent très faibles, montrant des limites majeures à résoudre.
+
+Ces deux articles nous mènent à la conclusion que l'IA générative a un potentiel significatif pour automatiser la création de code d'infrastructure mais qu'il faut privilégier des approches itératives pour atteindre des résultats déployables. 
+
+== Benchmarks de comparaison des modèles d'IA
+
+Quelques benchmarks récents comparent les performances des modèles d'IA générative pour des tâches de programmation et nous ont aidé à choisir le modèle le plus adapté pour notre projet (voir la section <modèle-gpt-5-medium-reasoning>):
+- #strong[Aider Polyglot] #link("https://aider.chat/docs/leaderboards/")
+- #strong[SWE (Software Engineering Evaluation)] #link("https://www.swebench.com/")
+- #strong[Vellum] #link("https://www.vellum.ai/best-llm-for-coding"): Leaderboard regroupant plusieurs benchmarks pour comparer les modèles d'IA générative dans divers tâches et domaines.
+
+== Outils cloud
+
+Nous avons utilisés plusieurs outils cloud pour le déploiement de l'application OpenDidac:
+- #strong[AWS (Amazon Web Services)] #link("https://aws.amazon.com/"): Fournisseur cloud choisi pour héberger l'infrastructure Kubernetes.
+- #strong[Kubernetes] #link("https://kubernetes.io/"): Système d'orchestration de conteneurs utilisé pour déployer et gérer l'application.
+- #strong[Terraform] #link("https://www.terraform.io/"): Outil d'infrastructure as code utilisé pour provisionner l'infrastructure cloud sur AWS.
+
 = Résultats et analyses
 == Phase de déploiement
 == Synthèse des resultats
