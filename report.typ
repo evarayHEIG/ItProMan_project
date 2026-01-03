@@ -208,7 +208,17 @@ Pour ce projet, le travail a été divisé en trois parties, de la manière suiv
 - Massimo Stefani : Déploiement Terraform de l'infrastructure Kubernetes sur AWS
 
 == Collecte de données
-== Critères d'evaluation
+TODO
+== Critères d'évaluation
+
+Pour évaluer la pertinence des résultats, les critères suivants ont été utilisés:
+
+- *Fonctionnel*: Est-ce que l'infrastructure déployée est fonctionnelle ? Est-ce que l'application peut être pleinement utilisée ?
+- *Respect des bonnes pratiques*: Est-ce que les bonnes pratiques relatives à la technologie principale sont respectées ?
+- *Productivité*: Est-ce qu'utiliser l'IA nous a fait gagner ou perdre du temps au total ?
+- *Sécurité*: Est-ce que l'infrastructure générée respecte tous les prérequis pour la considérer comme sécurisée ? Par exemple: les mots de passe en clair, les règles de pare-feu, les permissions définies, ... Nous n'avons pas cherché à déterminer la sécurité de l'usage de l'IA avec Windsurf.
+- *Prix*: Est-ce que notre usage ou notre abonnement a engendré un coût élevé ?
+
 = Références
 
 == Exploration des outils d'IA pour le déploiement IT
@@ -310,6 +320,28 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 
 
 == Défis rencontrés
+=== Kubernetes
+- *Fusion des 3 parties difficile*
+- *Compréhension et direction générale*: Quand nous étions bloqué sur cette fusion, nous étions obligés de comprendre l'architecture de communication entre conteneurs, pour comprendre les erreurs liée à Keycloak. Comme le LLM tournait en rond, nous avons du choisir une autre direction, c'est à dire de revenir sur une ancienne version de l'application qui utilisait une instance Keycloak en local. Pour choisir cette direction, nous avons du lire le README, qui mentionnait clairement que Keycloak en local ne pouvait plus fonctionner. Nous aurions gagné du temps si le LLM avait également lu le README et s'il nous avait tout de suite demandé de faire une choix parmi une liste d'options possibles.
+- *Verbosité des réponses*: Durant les phrases de réflexions et de résultats final, le LLM génère beaucoup de texte, souvent très verbeux. Une partie du texte est complètement inutile pour les humains. Par exemple, les "pensées" du LLM peuvent être très longues et inutiles: #quote("Je vais mettre à jour le fichier terraform.tfvars.json pour adopter la nouvelle structure d’objet cluster, puis je mettrai à jour la todo list pour marquer la revue des tfvars comme terminée."). Au milieu des dizaines de lignes de texte, certaines informations ou choix importantes sont facilement loupée par un parcours humain. On est très loin d'un expert coach qui peut se concentrer sur les décisions à prendre, à rendre l'information concise et aider à avancer à débloquer les problèmes un par un.
+- *Direction vague*: Quand il y a des problèmes et que l'humain n'a pas pris de décision claire sur la direction à prendre, le LLM navigue dans différentes directions à la fois.
+
+=== Terraform
+- *Prérequis*: l'IA ne mentionne pas les prérequis d'accès ou de permissions nécessaires au déploiement sur AWS, il faut connaître un minimum le fonctionnement des services et avoir configuré sa machine pour être connecté à AWS.
+- *Qualité du code Terraform moyenne/mauvaise*: Massimo a été confronté à une qualité de code moyenne voir mauvaise, notamment à cause une quantité importante de duplications. Au lieu de créer des abstractions, l'IA qui ne peut pas se fatiguer des copier-coller, duplique sans problème des dizaines d'éléments et avec le même paramètre légèrement adapté. Le LLM part régulièrement dans des directions trop complexes, alors que des alternatives plus simples existent. Massimo a du lui demander plusieurs fois d'améliorer la structure pour améliorer la lisibilité. L'hypothèse est que contrairement au YAML pour Kubernetes, il existe plusieurs approches valides dans le language de Terraform (HCL). La meilleure approche n'est pas toujours choisie par l'IA.
+- *Guidage important*: Pour corriger la qualité du code moyenne, de nombreuses itérations ont été nécessaires. Le guidage régulier est requis et il doit contenir des pistes précises.
+- *Perte de temps*: Cette expérience mitigée, avec la toute fin qui a du être terminée à la main, a globalement été une perte de temps. Plusieurs étapes auraient été plus directement droit au but dans les bonnes pratiques, si toute ou partie avait été rédigée à la main.
+- *Les fichiers rules.md non efficace*: Pour tenter que notre LLM utilise directement les bonnes pratiques, nous avons défini un fichier de règles. A nombreuses reprises les directives, pourtant courtes, objectives et claires, n'ont pas été respectées. Il est difficile de déterminer si l'existence de ce fichier ait eu un impact, au vu des mauvais résultats obtenus.
+- *Le LLM fonce dans le mur si on le lui demande*: A une occasion, l'approche de correction que Massimo a proposé n'était pas possible techniquement. Pourtant l'IA a généré un résultat qui correspondait à cette approche, contrairement à un expert humain qui aurait su que c'était impossible ou qui aurait pu le découvrir en le testant.
+
+=== Autres défis en général
+
+- *Tendance à minimiser les interactions*: L'usage des LLM est financé en fonction de l'usage, en comptant chaque message un certain nombre de crédit. Cette approche permet de payer un coût faible à l'essai, mais a tendance à minimiser les prompts.
+- *Evaluation difficile de l'impact du prompt engineering*: Il est difficile de juger de la qualité de nos prompts en fonction des résultats, comme les difficultés des tâches ne sont pas comparables. Parfois, une tâche simple peut être très bien faite avec peu d'information. A d'autres occasions, donner un rôle "d'expert Kubernetes" ne suffit pas à le faire devenir expert dans la technologie et la compréhension d'une 
+- *Générations lentes et ennuyantes*: Cela dépend bien sûr du service et du modèle, mais attendre 5 minutes pour qu'une correction de 5 caractères soit faite est bien frustrante. Le temps de "réflexion" ne varie pas en fonction de la complexité de la tâche. Pour éviter cette limite, nous devrions changer de LLM pour des questions faciles.
+- *Léger retard technologique*: Les versions des plugins Terraform utilisés avaient un léger retard, certaines API ont changées depuis. Cette limite est basée sur la date d'entrainement du LLM ou des capacités limitées d'accès aux dernières documentations en ligne.
+- *Temps de relecture*: le temps de rédaction étant grandement réduit, le temps de relecture des conversations et des fichiers modifiés devient important.
+
 == Retour d'expérience du groupe
 == Comparaison avec d'autres approches ou pratiques
 
@@ -324,6 +356,8 @@ L'autre option qui n'est pas incompatible avec la précédente, consiste à donn
 
 = Conclusion
 = Recommandations
+#pagebreak()
+
 = Références
 #show "Online": "En ligne"
 #show "Available": "Lien"
