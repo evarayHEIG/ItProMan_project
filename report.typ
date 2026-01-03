@@ -207,6 +207,24 @@ Pour ce projet, le travail a été divisé en trois parties, de la manière suiv
 = Résultats et analyses
 == Phase de déploiement
 == Synthèse des resultats
+
+Nous estimons qu'en ce qui concerne les fichiers de déploiement Kubernetes, 95% des fichiers finaux de notre déploiement ont été générés par l'IA générative, tandis que pour les fichiers Terraform, environ 80% des fichiers finaux ont été créés avec l'aide de l'IA. Le reste du code a été écrit manuellement pour corriger des erreurs ou ajuster des configurations spécifiques lorsque nous n'avons pas réussi à obtenir le résultat souhaité avec l'IA générative après plusieurs tentatives. Ainsi, nous estimons qu'environ 87.5% du code total de déploiement a été généré avec l'aide de l'IA.
+
+#table(
+  columns: (1fr, 3fr),
+  align: (left, center),
+  [*Type de fichier*], [*Pourcentage du code généré par l'IA dans le déploiement final*],
+  [Fichiers Kubernetes], [95%], 
+  [Fichiers Terraform], [80%],
+  [Total], [87.5%]
+)
+
+La comparaison entre l'approche par IA générative et une approche traditionnelle révèle des différences dans la structure du code produit.
+
+- #strong[Kubernetes]: L'IA générative a produit une architecture modulaire avec génération de multiples fichiers séparés respectant les conventions de la communauté : namespaces dédiés, fichiers kustomization pour la gestion de configuration, secrets pour les données sensibles, et services pour l'exposition des applications. Sans connaissance préalable de Kubernetes, une approche manuelle aurait abouti à une structure plus monolithique avec moins de séparation des responsabilités et un respect moins rigoureux des bonnes pratiques établies.
+- #strong[Terraform]: Pour Terraform, l'IA a généré du code souvent fonctionnel mais présentant des répétitions notables pour des ressources similaires où seuls les noms diffèrent. Une approche manuelle traditionnelle aurait privilégié la modularisation avec abstraction et paramètres pour éviter cette duplication, aboutissant à un code plus maintenable et évolutif.
+- #strong[En général]: L'IA générative a permis de produire rapidement du code fonctionnel, mais avec quelques imperfections nécessitant des ajustements manuels.
+
 = Discussion
 == Bénéfices observés
 
