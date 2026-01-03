@@ -209,6 +209,50 @@ Pour ce projet, le travail a été divisé en trois parties, de la manière suiv
 == Synthèse des resultats
 = Discussion
 == Bénéfices observés
+
+L'utilisation de l'IA générative dans le processus de déploiement IT a apporté plusieurs bénéfices notables, tant au niveau général qu'au niveau spécifique des technologies utilisées, à savoir Kubernetes et Terraform.
+
+#strong[Au niveau général :]
+- Le temps d'amorçage du projet a été considérablement réduit grâce à l'IA générative, qui a permis de générer rapidement tous les fichiers de configuration de base.
+- L'utilisation de l'IA générative permet une approche d'expérimentation rapide. En effet, il est très facile d'obtenir rapidement un déploiement fonctionnel, même sans maîtrise approfondie des technologies utilisées. Cela permet de tester différentes configurations et d'itérer rapidement mais est évidemment à éviter en production sans une revue humaine approfondie.
+- L'IA générative permet la decouvertes de nouvelles approches que le développeur n'aurait pas envisagées. Par exemple, dans notre cas, l'IA a suggéré l'utilisation de certaines organisation de ficihiers et de ressources Kubernetes que nous n'aurions pas pensé à utiliser, à cause de notre manque d'expérience avec cet outil.
+- La résolution d'erreurs classiques est grandement facilitée par l'IA générative, qui peut analyser les messages d'erreur et proposer des solutions adaptées. Cela a permis de surmonter rapidement des obstacles techniques, sans devoir lire en détail la documentation officielle, comme illustré dans l'exemple ci-dessous.
+
+#figure(image("images/correction_erreur.png"), caption: [ Exemple d'aide à la résolution d'erreur par l'IA générative])
+
+#strong[Pour Kubernetes :]
+- Grâce à l'IA générative, il n'y a pas besoin de connaître Kubernetes en profondeur pour réussir un déploiement. L'IA peut générer les fichiers YAML nécessaires et guider l'utilisateur à travers le processus de déploiement parfaitement.
+- Le gain de temps sur le boilerplate code des fichiers de déploiement est significatif en générant les fichiers de configuration par IA générative. 
+- Lorsqu'on est débutant, l'IA générative permet un énorme gain de qualité car elle suit les bonnes pratiques recommandées par la communauté Kubernetes diligemment.
+
+#strong[Pour Terraform :]
+- Le seul bénéfice observé est le gain de temps initial pour la création des fichiers de configuration Terraform.
+
+#strong[Synthèse]
+
+#table(
+  columns: (auto, 1fr),
+  align: (left, left),
+  stroke: 0.5pt,
+  inset: 10pt,
+  [*Catégorie*], [*Principaux bénéfices*],
+  [Général], [
+    - Réduction du temps d'amorçage du projet
+    - Expérimentation et itération rapides
+    - Découverte de nouvelles approches
+    - Résolution facilitée des erreurs classiques
+  ],
+  [Kubernetes], [
+    - Déploiement sans expertise approfondie
+    - Gain de temps sur le boilerplate
+    - Gain en qualité (bonnes pratiques respectées)
+  ],
+  [Terraform], [
+    - Gain de temps pour la création initiale des fichiers
+  ]
+)
+
+
 == Défis rencontrés
 == Retour d'expérience du groupe
 == Comparaison avec d'autres approches ou pratiques
