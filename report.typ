@@ -270,6 +270,13 @@ Nous avons utilisés plusieurs outils cloud pour le déploiement de l'applicatio
 == Phase de déploiement
 La phase de déploiement a été réalisée en deux étapes distinctes mais complémentaires : d'abord le déploiement de l'application OpenDidac et de ses dépendances sur un cluster Kubernetes, puis le provisionnement de l'infrastructure cloud via Terraform. Cette approche progressive a permis de valider le fonctionnement de l'application dans un environnement local avant de la déployer sur une infrastructure cloud.
 
+==== Architecture et connectivité
+
+L'architecture applicative dans Kubernetes finale se compose de :
+
+#figure(image("images/dep_app.png", width: 50%), caption: [ Architecture applicative dans Kubernetes.])
+
+
 === Déploiement Kubernetes
 
 Le déploiement sur Kubernetes a été réalisé en trois phases correspondant aux composants principaux de l'application : la base de données PostgreSQL, le serveur d'identité Keycloak, et l'application web OpenDidac.
@@ -325,12 +332,6 @@ Le déploiement de l'application web a nécessité une approche plus sophistiqu�
 - *Variables d'environnement* : Configuration complète via un Secret incluant `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, et les paramètres de connexion à Keycloak.
 - *Health checks* : Configuration de readiness probe (délai initial de 15s) et liveness probe (délai de 30s) sur l'endpoint racine pour garantir que Next.js est complètement initialisé avant d'accepter du trafic.
 - *Service et Ingress* : Exposition de l'application via un Service ClusterIP et un Ingress pour l'accès externe.
-
-==== Architecture et connectivité
-
-L'architecture applicative dans Kubernetes finale se compose de :
-
-#figure(image("images/dep_app.png", width: 50%), caption: [ Architecture applicative dans Kubernetes.])
 
 === Déploiement Terraform
 
