@@ -182,7 +182,7 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 
 Pour ce projet, le modèle d'IA générative utilisé est GPT-5 (medium reasoning), lancé par OpenAi le 7 aoùt 2025. Le choix de ce modèle a été appuyé par plusieurs benchmarks démontrant de ses bonnes performances dans des tâches de programmation et de raisonnement complexe, le rendant parfaitement adapté au développement en mode agentique. En particulier, les benchmarks suivant ont été consultés :
 - #strong[Aider Polyglot]: Un benchmark open-source évaluant les capacités de différents modèles LLM à suivre des instructions et à modifier du code correctement sans intervention humaine. GPT-5 (medium reasoning) est classé comme second meilleur modèle dans ce benchmark à la date du 12 décembre 2025. @AiderDocs
-- #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé dans l'évaluation des modèles LLM pour leur capacités à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. @WwwWebsite
+- #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé dans l'évaluation des modèles LLM pour leur capacités à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. @SweBench
 
 #figure(
   grid(
@@ -224,36 +224,39 @@ Pour évaluer la pertinence des résultats, les critères suivants ont été uti
 == Exploration des outils d'IA pour le déploiement IT
 
 Plusieurs outils d'IA générative ont été envisagés:
-- #strong[Windsurf] #link("https://windsurf.com/"): Outil choisi pour ce projet, car il permet un mode agent avec accès complet au contexte du projet dans un IDE.
-- #strong[Cursor] #link("https://cursor.com/"): Outil similaire à Windsurf, mais avec moins de fonctionnalités avancées pour le mode agent, n'a pas été retenu.
-- #strong[GitHub Copilot] #link("https://github.com/features/copilot"): Assitant de code intégré dans plusieurs IDE, pas retenu car pas facilement accès au contexte complet du projet.
+- #strong[Windsurf] @Windsurf: Outil choisi pour ce projet, car il permet un mode agent avec accès complet au contexte du projet dans un IDE.
+- #strong[Cursor] @CursorWebsite: Outil similaire à Windsurf, mais avec moins de fonctionnalités avancées pour le mode agent, n'a pas été retenu.
+- #strong[GitHub Copilot] @CopilotGithub: Assitant de code intégré dans plusieurs IDE, pas retenu car pas facilement accès au contexte complet du projet.
  
 
 == Recherches académiques sur le déploiement IT avec l'IA générative
 
 Quelques articles académiques récents explorant l'utilisation de l'IA générative pour le déploiement IT nous ont permis d'avoir un aperçu des avancées dans ce domaine:
 
-- #strong[Multi-Agent Code-Orchestrated Generation for Reliable Infrastructure-as-Code] #link("https://arxiv.org/abs/2510.03902"): Ce travail présente MACOG, une architecture multi-agents destinée à générer du code IaC fiable à partir de descriptions en langage naturel. Les approches classiques en génération unique produisent fréquemment erreurs syntaxiques, violations de politiques et conceptions peu robustes. MACOG répartit la tâche entre des agents spécialisés (architecture, harmonisation fournisseur, ingénierie, revue, sécurité, coûts/capacité, DevOps, mémoire), coordonnés via un tableau partagé et un orchestrateur à états finis, afin de produire des configurations Terraform cohérentes, valides et conformes aux règles. Le système intègre Terraform Plan pour vérifier la validité d’exécution et OPA pour appliquer des politiques personnalisées. Testé sur IaC-Eval, MACOG apporte les meilleures améliorations : par exemple, GPT-5 passe de 54,90 (avec RAG) à 74,02, et Gemini-2.5 Pro de 43,56 à 60,13, avec des hausses simultanées sur BLEU, CodeBERTScore et une évaluation par LLM. Les ablations montrent que le décodage contraint et le retour de déploiement sont essentiels : leur suppression fait chuter les scores à 64,89 et 56,93.
-- #strong[Deployability-Centric Infrastructure-as-Code Generation: An LLM-based Iterative Framework] #link("https://arxiv.org/abs/2506.05623"): Cette étude présente un cadre fondé sur des LLM pour générer automatiquement des templates IaC réellement déployables à partir de descriptions en langage naturel. Les approches existantes se limitent surtout à la vérification syntaxique, alors que la déployabilité est l’enjeu principal. Les auteurs introduisent deux apports : IaCGen, un système itératif qui améliore progressivement les templates jusqu’à ce qu’ils se déploient, et DPIaC-Eval, un benchmark de 153 scénarios mesurant syntaxe, déploiement, intention utilisateur et sécurité. Les modèles actuels (Claude-3.5, Claude-3.7) ne dépassent pas 30 % de déploiements réussis au premier essai. Avec IaCGen, ils franchissent 90 % après 25 itérations et atteignent jusqu’à 98 %. Malgré ces progrès, l’alignement avec l’intention (25,2 %) et la conformité sécurité (8,4 %) restent très faibles, montrant des limites majeures à résoudre.
+- #strong[Multi-Agent Code-Orchestrated Generation for Reliable Infrastructure-as-Code] @ArxivAbsPaperMultiAgent: Ce travail présente MACOG, une architecture multi-agents destinée à générer du code IaC fiable à partir de descriptions en langage naturel. Les approches classiques en génération unique produisent fréquemment erreurs syntaxiques, violations de politiques et conceptions peu robustes. MACOG répartit la tâche entre des agents spécialisés (architecture, harmonisation fournisseur, ingénierie, revue, sécurité, coûts/capacité, DevOps, mémoire), coordonnés via un tableau partagé et un orchestrateur à états finis, afin de produire des configurations Terraform cohérentes, valides et conformes aux règles. Le système intègre Terraform Plan pour vérifier la validité d’exécution et OPA pour appliquer des politiques personnalisées. Testé sur IaC-Eval, MACOG apporte les meilleures améliorations : par exemple, GPT-5 passe de 54,90 (avec RAG) à 74,02, et Gemini-2.5 Pro de 43,56 à 60,13, avec des hausses simultanées sur BLEU, CodeBERTScore et une évaluation par LLM. Les ablations montrent que le décodage contraint et le retour de déploiement sont essentiels : leur suppression fait chuter les scores à 64,89 et 56,93.
+- #strong[Deployability-Centric Infrastructure-as-Code Generation: An LLM-based Iterative Framework] @ArxivAbsPaperIacGen: Cette étude présente un cadre fondé sur des LLM pour générer automatiquement des templates IaC réellement déployables à partir de descriptions en langage naturel. Les approches existantes se limitent surtout à la vérification syntaxique, alors que la déployabilité est l’enjeu principal. Les auteurs introduisent deux apports : IaCGen, un système itératif qui améliore progressivement les templates jusqu’à ce qu’ils se déploient, et DPIaC-Eval, un benchmark de 153 scénarios mesurant syntaxe, déploiement, intention utilisateur et sécurité. Les modèles actuels (Claude-3.5, Claude-3.7) ne dépassent pas 30 % de déploiements réussis au premier essai. Avec IaCGen, ils franchissent 90 % après 25 itérations et atteignent jusqu’à 98 %. Malgré ces progrès, l’alignement avec l’intention (25,2 %) et la conformité sécurité (8,4 %) restent très faibles, montrant des limites majeures à résoudre.
 
 Ces deux articles nous mènent à la conclusion que l'IA générative a un potentiel significatif pour automatiser la création de code d'infrastructure mais qu'il faut privilégier des approches itératives pour atteindre des résultats déployables. 
 
 == Benchmarks de comparaison des modèles d'IA générative
 
 Quelques benchmarks récents comparent les performances des modèles d'IA générative pour des tâches de programmation et nous ont aidé à choisir le modèle le plus adapté pour notre projet (voir la section <modèle-gpt-5-medium-reasoning>):
-- #strong[Aider Polyglot] #link("https://aider.chat/docs/leaderboards/")
-- #strong[SWE (Software Engineering Evaluation)] #link("https://www.swebench.com/")
-- #strong[Vellum] #link("https://www.vellum.ai/best-llm-for-coding"): Leaderboard regroupant plusieurs benchmarks pour comparer les modèles d'IA générative dans divers tâches et domaines.
+- #strong[Aider Polyglot] @AiderDocs
+- #strong[SWE (Software Engineering Evaluation)] @SweBench
+- #strong[Vellum] @WwwBestLlmForCoding: Leaderboard regroupant plusieurs benchmarks pour comparer les modèles d'IA générative dans divers tâches et domaines.
+
+// TODO: check potentiel duplication avec "Modèle GPT-5 (medium reasoning)"
 
 == Outils cloud
 
 Nous avons utilisés plusieurs outils cloud pour le déploiement de l'application OpenDidac:
-- #strong[AWS (Amazon Web Services)] #link("https://aws.amazon.com/"): Fournisseur cloud choisi pour héberger l'infrastructure Kubernetes.
-- #strong[Kubernetes] #link("https://kubernetes.io/"): Système d'orchestration de conteneurs utilisé pour déployer et gérer l'application.
-- #strong[Terraform] #link("https://www.terraform.io/"): Outil d'infrastructure as code utilisé pour provisionner l'infrastructure cloud sur AWS.
+- #strong[AWS (Amazon Web Services)] @AwsWebsite: Fournisseur cloud choisi pour héberger l'infrastructure Kubernetes.
+- #strong[Kubernetes] @KubernetesWebsite: Système d'orchestration de conteneurs utilisé pour déployer et gérer l'application.
+- #strong[Terraform] @Terraform: Outil d'infrastructure as code utilisé pour provisionner l'infrastructure cloud sur AWS.
 
 = Résultats et analyses
 == Phase de déploiement
+TODO
 == Synthèse des resultats
 
 Nous estimons qu'en ce qui concerne les fichiers de déploiement Kubernetes, 95% des fichiers finaux de notre déploiement ont été générés par l'IA générative, tandis que pour les fichiers Terraform, environ 80% des fichiers finaux ont été créés avec l'aide de l'IA. Le reste du code a été écrit manuellement pour corriger des erreurs ou ajuster des configurations spécifiques lorsque nous n'avons pas réussi à obtenir le résultat souhaité avec l'IA générative après plusieurs tentatives. Ainsi, nous estimons qu'environ 87.5% du code total de déploiement a été généré avec l'aide de l'IA.
