@@ -140,7 +140,9 @@ Notre but étant de s'intéresser à la phase de déploiement, nous avons tout d
 Le but de ce projet est donc de déployer cette application web en utilisant différentes technologies d'infrastructure, en s'appuyant sur l'IA générative pour automatiser le processus de déploiement.
 
 === Kubernetes
+TODO
 === Terraform
+TODO
 === Windsurf
 Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf @Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet grâce à un accès complet au contexte. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. Pour atteindre le résultat souhaité, l'utilisateur n'a qu'à formuler une demande en langage naturel dans le panneau de conversation intégré, et l'IA se charge de déterminer les actions nécessaires pour accomplir la tâche.
 
@@ -208,7 +210,8 @@ Pour ce projet, le travail a été divisé en trois parties, de la manière suiv
 - Massimo Stefani : Déploiement Terraform de l'infrastructure Kubernetes sur AWS
 
 == Collecte de données
-TODO
+TODO ? retirer la section??
+
 == Critères d'évaluation
 
 Pour évaluer la pertinence des résultats, les critères suivants ont été utilisés:
@@ -220,6 +223,7 @@ Pour évaluer la pertinence des résultats, les critères suivants ont été uti
 - *Prix*: Est-ce que notre usage ou notre abonnement a engendré un coût élevé ?
 
 = Références
+TODO: renommer la section ?
 
 == Exploration des outils d'IA pour le déploiement IT
 
