@@ -200,7 +200,7 @@ Plusieurs modèles ont de meilleurs résultats dans ces benchmarks, mais ils ne 
 
 Ce projet a été réalisé par trois étudiants de l'orientation Computer Science du Master of Science in Engineering (MSE) de la HES-SO. Les membres sont tous des ingénieurs détenteurs d'un Bachelor of Science en informatique et systèmes de communication avec une orientation en informatique logicielle, délivré par la HEIG-VD. Les participants sont Eva Ray, Samuel Roland et Massimo Stefani.
 
-Les trois membres ont suivi un cours de cloud computing durant leur Bachelor et suivent actuellement une version avancée de ce cours dans le cadre de leur Master. Ainsi, ils possèdent tous des connaissances de base en déploiement d'applications cloud. Cependant, Samuel et Eva sont débutants en Kubernetes et Terraform, tandis que Massimo a une solide expérience de ces outils qu'ils a utilisés dans des projets professionnels antérieurs, ainsi que son travail de Bachelor.
+Les trois membres ont suivi un cours de Cloud Computing durant leur Bachelor et suivent actuellement une version avancée de ce cours dans le cadre de leur Master. Ainsi, ils possèdent tous des connaissances de base en déploiement d'applications Cloud. Cependant, Samuel et Eva sont débutants en Kubernetes et Terraform, tandis que Massimo a une solide expérience de ces outils qu'il a utilisés dans des projets professionnels antérieurs, ainsi que son travail de Bachelor.
 
 Pour ce projet, le travail a été divisé en trois parties, de la manière suivante :
 - Eva Ray : Déploiement Kubernetes de la base de données PostgreSQL et de keycloak
@@ -343,6 +343,8 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 - *Temps de relecture*: le temps de rédaction étant grandement réduit, le temps de relecture des conversations et des fichiers modifiés devient important.
 
 == Retour d'expérience du groupe
+TODO: ya besoin de plus que ce quil y a au dessus et en conclusion ???
+
 == Comparaison avec d'autres approches ou pratiques
 
 Comme le montre la @ialevels, nous avons défini 6 niveaux d'adoption de l'IA, pour cette comparaison. Tout à gauche, le niveau d'adoption zéro, sans aucune aide d'intelligence artificielle. Ensuite, nous avons les chatbot en ligne qui regroupent ChatGPT, Copilat Chat, et beaucoup d'autres. Ils sont accessibles via des sites web et permettent souvent de choisir entre différents LLM mises à disposition. Ces chatbots en ligne n'ont comme contexte que l'historique de conversation des messages fournis, et peuvent parfois faire également des recherches sur le web. Leur réponse ne peut être donnée quand dans l'interface de chat, leur changements doivent donc être intégrés à la main. Dans le contexte d'une base de code existante comme Opendidac, il aurait fallu lui donner le contenu de certains fichiers qui nous semblent pertinents, pour qu'il puisse comprendre la structure de l'application.
@@ -355,10 +357,29 @@ Les dernières approches qui poussent encore plus loin l'intégration sont les f
 L'autre option qui n'est pas incompatible avec la précédente, consiste à donner accès à des outils ou ressources avancées via des serveurs MCP (Model Context Protocol) @ModelcontextprotocolDocs. Nous aurions pu utiliser un serveur MCP pour Kubernetes, permettant à notre LLM d'accéder à l'état du cluster et de créer des ressources, sans avoir de CLIs installés sur nos machines. Au lieu de nous donner des commandes `kubectl` pour lancer les services, pods et autres fichiers définis, une intégration d'un serveur MCP aurait pu permettre de lancer ces actions tout seul (après certaines approbations). #footnote(link("https://github.com/containers/kubernetes-mcp-server/"))
 
 = Conclusion
-= Recommandations
+== Bilan général
+Le déploiement par IA fonctionne correctement jusqu’à un certain niveau de complexité. Tout le code "boilerplate", une fois la direction choisie, peut facilement être rédigé par IA. Une fois la base définie, nous avons pu mieux cerner les limites de l’IA et la nécessité de cadrer son utilisation, en prenant certaines décisions stratégiques et techniques. Au final, nous pensons qu'un déploiement Cloud accéléré par l’IA permet de tester plus rapidement et plus souvent une infrastructure. La possibilité d'avoir rapidement un prototype fonctionnel, facilite l'accès aux déploiements staging durant le développement, ce qui peut s'apparenter à l’architecture exécutable définie par RUP.
+
+=== Perspectives
+Le domaine de l'IA est bien large et en constante évolution à un rythme effrené, qu'il serait bien long de lister toutes les possibilités d'exploration. Si le projet devait continuer, voici les sujets que nous prendrions en premier.
+- *Explorer une intégration avancée des LLM avec des serveurs MCP et une flotte d'agents*. Cette option nous permettrait d'offir une boucle de feedback sur le fonctionnement de l'infrastructure au LLM, lui permettre d'inspecter l'état d'un cluster Kubernetes par lui-même ou encore de bénéficier de revues de code d'autres LLM en parallèle. Nous pourrions ainsi, avec un travail de configuration plus important en amont, avoir une orchestration plus fine du travail des LLM.
+- *Approfondir l’usage des rules* pour obtenir des résultats plus précis et mieux contrôlés. La longueur, le style et le type de règles à inclure ont probablement un impact sur leur efficacité.
+- Travailler le prompt engineering pour réduire le nombre d’itérations et améliorer la qualité du code généré. Tout comme les rules, la manière d'écrire nos prompts a probablement été étudié et comparé. Nous pourrions continuer les recherches existantes en approfondissant et adaptant les astuces pour le domaine du déploiement Cloud.
+
+=== Recommandations
+Au terme de ce projet, voici ce que nous souhaiterions recommander à des collègues ingénieurs qui se demandent comment l'utiliser au mieux.
+
+*Pour l’industrie:*
+L’IA peut accélérer significativement un déploiement, surtout sur les premières étapes de mise en place de premières versions. Sans relecture des résultats, il est possible d'avoir des mauvaises surprises lors de problèmes en production, qui peuvent coûter très cher s'ils concernent la sécurité ou des erreurs de stratégie. Des erreurs de déploiement peuvent causer des pannes qui impactent fortement tout le business d'une entreprise, s'il concerne des services critiques. Elle ne doit pas être utilisée sans validation humaine, puisque seuls les humains pourront prendre la responsabilité finale de ce qui est déployé.
+
+*Pour l’éducation:*
+Le contexte est à notre avis bien différent, comme le but principal est d'acquérir des nouvelles compétences sur des technologies spécifiques. L'expérience de Eva et Samuel sur Kubernetes, s'est révelée peu bénéfique en terme de connaissances et compétences. A part avoir appris quelques commandes `kubectl` et découvert de nouvelles possibilités inconnues auparavant, la contribution éducative à Kubernetes en déleguant le travail à une IA, est faible.
+Nous recommandons ainsi vivement d'encourager la découverte manuelle des outils avant de s’appuyer sur l’IA. La première phrase de découverte, recherche personnelle et de familiarisation aux concepts, bonnes pratiques et à la syntaxe s'ancre beaucoup mieux par l'effort et la réflexion. Une fois des bases acquises et qu'il devient possible de juger de la qualité d'une implémentation, l’IA peut aider à générer du code fonctionnel, mais il reste essentiel de comprendre ce qui est produit.
+
 #pagebreak()
 
 = Références
+// TODO: ya deux fois ce titre...
 #show "Online": "En ligne"
 #show "Available": "Lien"
 #show link: l => underline(l)
