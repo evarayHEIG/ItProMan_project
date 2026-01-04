@@ -139,10 +139,18 @@ Notre but étant de s'intéresser à la phase de déploiement, nous avons tout d
 
 Le but de ce projet est donc de déployer cette application web en utilisant différentes technologies d'infrastructure, en s'appuyant sur l'IA générative pour automatiser le processus de déploiement.
 
-=== Kubernetes
-TODO
 === Terraform
-TODO
+Le déploiement d'applications implique nécessairement la gestion d'une infrastructure sous-jacente capable de les héberger et de les exécuter. L'infrastructure peut prendre différentes formes selon les besoins : serveurs physiques, machines virtuelles, conteneurs ou services cloud. Cette infrastructure doit être provisionnée, configurée et maintenue de manière cohérente et reproductible, ce qui représente un défi majeur dans les environnements de production modernes.
+
+Terraform est un outil open-source d'Infrastructure as Code (IaC) développé par HashiCorp qui permet de définir et de provisionner l'infrastructure informatique de manière déclarative. Contrairement aux approches impératives traditionnelles où l'on spécifie les étapes à suivre pour créer l'infrastructure, Terraform adopte une approche déclarative où l'on décrit l'état désiré de l'infrastructure, et l'outil se charge de déterminer les actions nécessaires pour atteindre cet état. Grâce à cette approche, utiliser une IA générative pour créer les fichiers de configuration Terraform permet d'automatiser le processus de provisionnement de l'infrastructure.
+
+=== Kubernetes
+Une fois l'infrastructure provisionnée, il est nécessaire de disposer d'une plateforme capable d'orchestrer et de gérer le déploiement des applications. Kubernetes répond à ce besoin en fournissant un système d'orchestration de conteneurs puissant et flexible.
+
+Kubernetes est une plateforme open-source d'orchestration de conteneurs développée initialement par Google et maintenue par la Cloud Native Computing Foundation (CNCF). Kubernetes automatise le déploiement, la mise à l'échelle et la gestion des applications conteneurisées, permettant d'exécuter des systèmes distribués de manière résiliente et efficace. La platemeforme a été choisie car elle permet de gérer des applications complexes composées avec des simples fichiers de configuration YAML, que l'IA générative peut créer automatiquement.
+
+L'intégration de Terraform et Kubernetes constitue ainsi une chaîne complète d'Infrastructure as Code. Cette approche permet d'automatiser entièrement le processus de déploiement comme se ferait dans un environnement professionnel.
+
 === Windsurf
 Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf @Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet grâce à un accès complet au contexte. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. Pour atteindre le résultat souhaité, l'utilisateur n'a qu'à formuler une demande en langage naturel dans le panneau de conversation intégré, et l'IA se charge de déterminer les actions nécessaires pour accomplir la tâche.
 
@@ -260,7 +268,112 @@ Nous avons utilisés plusieurs outils cloud pour le déploiement de l'applicatio
 
 = Résultats et analyses
 == Phase de déploiement
-TODO
+La phase de déploiement a été réalisée en deux étapes distinctes mais complémentaires : d'abord le déploiement de l'application OpenDidac et de ses dépendances sur un cluster Kubernetes, puis le provisionnement de l'infrastructure cloud via Terraform. Cette approche progressive a permis de valider le fonctionnement de l'application dans un environnement local avant de la déployer sur une infrastructure cloud.
+
+=== Déploiement Kubernetes
+
+Le déploiement sur Kubernetes a été réalisé en trois phases correspondant aux composants principaux de l'application : la base de données PostgreSQL, le serveur d'identité Keycloak, et l'application web OpenDidac.
+
+==== Bonnes pratiques et organisation
+
+Le déploiement Kubernetes a été structuré en respectant les bonnes pratiques de l'écosystème, notamment :
+
+- *Kustomize* : Utilisation de `kustomization.yaml` dans chaque dossier de composant pour faciliter la gestion des manifestes et permettre des déploiements déclaratifs via `kubectl apply -k`.
+- *Namespaces* : Isolation logique de tous les composants dans un namespace dédié `opendidac`, séparant les ressources de l'application du reste du cluster.
+- *Secrets* : Stockage sécurisé des informations sensibles (credentials de base de données, clés d'authentification) dans des objets Kubernetes Secret, encodés en base64 et injectés comme variables d'environnement.
+- *Services* : Exposition cohérente des composants via des Services ClusterIP pour la communication interne et LoadBalancer pour l'accès externe.
+- *Health checks* : Configuration systématique de readiness et liveness probes pour garantir la santé des applications.
+
+==== Base de données PostgreSQL
+
+Le déploiement de PostgreSQL a constitué la première étape, car il s'agit de la dépendance critique dont dépendent les autres composants. L'IA générative a créé les manifestes suivants :
+
+- *StatefulSet* : Contrairement à un Deployment classique, un StatefulSet a été utilisé pour garantir une identité stable et un ordre de démarrage prévisible, essentiel pour une base de données.
+- *PersistentVolume* : Configuration d'un PVC (PersistentVolumeClaim) de 10Gi via `volumeClaimTemplates`, assurant la persistance des données même en cas de redémarrage du pod.
+- *Variables d'environnement* : Les credentials par défaut ont été définis dans un Secret (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`), en s'inspirant des valeurs utilisées dans l'environnement de développement Docker existant.
+- *Health checks* : Implémentation de readiness et liveness probes utilisant la commande `pg_isready` pour vérifier la disponibilité de la base avant d'accepter des connexions.
+
+Vérification pour valider le déploiement :
+
+#figure(image("images/dep_kube.png", width: 75%), caption: [ Validation du déploiement Kubernetes. ])
+
+==== Keycloak (Identity Provider)
+
+Le déploiement de Keycloak a présenté plus de complexité, nécessitant une configuration post-déploiement et la résolution d'erreurs liées aux variables d'environnement. L'IA générative a généré :
+
+- *Deployment* : Configuration d'un Deployment Keycloak avec l'image officielle `quay.io/keycloak/keycloak`.
+- *Variables d'environnement* : Définition des credentials administrateur via un Secret (`KEYCLOAK_ADMIN`, `KEYCLOAK_ADMIN_PASSWORD`) et configuration de la connexion à la base de données PostgreSQL.
+- *Service et Ingress* : Exposition de Keycloak via un Service ClusterIP et un Ingress pour permettre l'accès externe avec un nom de domaine personnalisé.
+
+*Configuration manuelle requise* : Après le déploiement, une configuration manuelle dans l'interface Keycloak a été nécessaire pour :
+
+1. Créer un realm dédié pour l'application OpenDidac.
+2. Configurer un client OIDC avec les URLs de callback appropriées.
+3. Créer des utilisateurs de test avec les rôles nécessaires.
+
+L'IA générative a fourni des instructions détaillées pour ces étapes, facilitant la configuration.
+
+*Résolution d'erreurs* : L'IA générative a aidé à diagnostiquer et corriger plusieurs erreurs :
+
+- *Erreur de connexion à la base* : L'IA a identifié que la variable `KC_DB_URL` devait pointer vers le Service PostgreSQL (`postgres.opendidac.svc.cluster.local`) plutôt qu'une adresse externe.
+
+==== Application web OpenDidac
+
+Le déploiement de l'application web a nécessité une approche plus sophistiquée pour gérer les migrations de base de données et l'intégration avec Keycloak :
+
+- *Pod avec Init Container* : Utilisation d'un init container pour exécuter les migrations Prisma (`npx prisma migrate deploy`) avant le démarrage de l'application principale. Cet init container attend que la base de données soit prête et réessaye jusqu'à 30 fois avec un délai de 5 secondes.
+- *Variables d'environnement* : Configuration complète via un Secret incluant `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, et les paramètres de connexion à Keycloak.
+- *Health checks* : Configuration de readiness probe (délai initial de 15s) et liveness probe (délai de 30s) sur l'endpoint racine pour garantir que Next.js est complètement initialisé avant d'accepter du trafic.
+- *Service et Ingress* : Exposition de l'application via un Service ClusterIP et un Ingress pour l'accès externe.
+
+==== Architecture et connectivité
+
+L'architecture applicative dans Kubernetes finale se compose de :
+
+#figure(image("images/dep_app.png", width: 75%), caption: [ Architecture applicative dans Kubernetes.])
+
+=== Déploiement Terraform
+
+Le provisionnement de l'infrastructure pour héberger le cluster Kubernetes sur AWS a constitué un défi significatif, révélant les limites de l'IA générative face à des problématiques techniques complexes.
+
+==== Bonnes pratiques non respectées
+
+Face à ces corrections ponctuelles, une refactorisation majeure a été demandée pour encapsuler toute la logique dans des structures de données complexes.
+
+Contrairement au déploiement Kubernetes, le code Terraform généré ne respectait pas toujours les bonnes pratiques :
+
+- *Pas de modules* : Le code était monolithique, sans réutilisation via des modules Terraform.
+- *Commentaires excessifs ou manquants* : Alternance entre des commentaires trop verbeux et des sections sans documentation.
+- *Pas de validation* : Aucune validation des variables.
+
+Ces manquements illustrent que l'IA générative excelle dans la génération rapide de code fonctionnel, mais nécessite une supervision humaine pour les aspects de qualité et de maintenabilité.
+
+#figure(image("images/dep_arch.png", width: 75%), caption: [ Architecture AWS.])
+
+
+==== Succès final
+
+Après de nombreuses itérations (environ 10-15 échanges avec l'IA), l'infrastructure a finalement été provisionnée avec succès :
+
+#figure(image("images/dep_aws.png", width: 75%), caption: [ Infrastructure AWS provisionnée avec succès. ])
+
+Le cluster K3s était opérationnel, accessible via le kubeconfig généré, et prêt à recevoir les déploiements Kubernetes créés précédemment :
+
+#figure(image("images/dep_aws_kube.png", width: 75%), caption: [ Accès au cluster K3s via kubeconfig. ])
+
+=== Déploiement complet
+
+L'intégration des deux phases a permis de réaliser un déploiement complet de l'application OpenDidac sur une infrastructure cloud AWS. Quelques changements mineurs ont été nécessaires pour adapter les configurations Kubernetes à l'environnement cloud, notamment la gestion des nouveaux endpoints et des adresses IP.
+
+#figure(image("images/dep_opendidac_aws.png", width: 75%), caption: [ Déploiement complet d'OpenDidac sur AWS. ])
+
+Pour tout essai, l'application reste disponible à l'adresse suivante :
+#link("http://ec2-34-200-229-9.compute-1.amazonaws.com:30080")[http://ec2-34-200-229-9.compute-1.amazonaws.com:30080]
+
+Utilisateur professeur :
+- Username : `testuse`
+- Password : `change-me`
+
 == Synthèse des resultats
 
 Nous estimons qu'en ce qui concerne les fichiers de déploiement Kubernetes, 95% des fichiers finaux de notre déploiement ont été générés par l'IA générative, tandis que pour les fichiers Terraform, environ 80% des fichiers finaux ont été créés avec l'aide de l'IA. Le reste du code a été écrit manuellement pour corriger des erreurs ou ajuster des configurations spécifiques lorsque nous n'avons pas réussi à obtenir le résultat souhaité avec l'IA générative après plusieurs tentatives. Ainsi, nous estimons qu'environ 87.5% du code total de déploiement a été généré avec l'aide de l'IA.
