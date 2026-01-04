@@ -393,3 +393,4 @@ Nous recommandons ainsi vivement d'encourager la découverte manuelle des outils
 #bibliography("biblio.bib", title: "Bibliographie", style: "ieee", full: true)
 
 = Annexes
+Nous avons géré le projet dans un repos Git #link("https://github.com/evarayHEIG/ItProMan_project"). Nous y avons inclut quelques liens d'accès rapide dans le README. Le repository contient des exports des conversations complètes de Windsurf et les fichiers finaux qui permettent de déployer notre infrastructure.
