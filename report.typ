@@ -330,7 +330,7 @@ Le déploiement de l'application web a nécessité une approche plus sophistiqu�
 
 L'architecture applicative dans Kubernetes finale se compose de :
 
-#figure(image("images/dep_app.png", width: 75%), caption: [ Architecture applicative dans Kubernetes.])
+#figure(image("images/dep_app.png", width: 50%), caption: [ Architecture applicative dans Kubernetes.])
 
 === Déploiement Terraform
 
@@ -348,7 +348,7 @@ Contrairement au déploiement Kubernetes, le code Terraform généré ne respect
 
 Ces manquements illustrent que l'IA générative excelle dans la génération rapide de code fonctionnel, mais nécessite une supervision humaine pour les aspects de qualité et de maintenabilité.
 
-#figure(image("images/dep_arch.png", width: 75%), caption: [ Architecture AWS.])
+#figure(image("images/dep_arch.png", width: 50%), caption: [ Architecture AWS.])
 
 
 ==== Succès final
