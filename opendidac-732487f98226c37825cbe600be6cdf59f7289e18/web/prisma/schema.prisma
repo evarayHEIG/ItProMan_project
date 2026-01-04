@@ -1,0 +1,861 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StudentPermission {
+  UPDATE
+  VIEW
+  HIDDEN
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  refresh_expires_in Int?
+  not_before_policy  Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  roles         Role[]
+
+  userOnEvaluation UserOnEvaluation[]
+  userDeniedAccess UserOnEvaluationDeniedAccessAttempt[]
+  studentAnswer    StudentAnswer[]
+  gradingSignedBy  StudentQuestionGrading[]
+  groups           UserOnGroup[]
+  groupsCreated    Group[]
+  annotations      Annotation[]
+}
+
+enum Role {
+  STUDENT
+  PROFESSOR
+  SUPER_ADMIN
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum QuestionType {
+  multipleChoice
+  trueFalse
+  essay
+  code
+  web
+  database
+}
+
+model Group {
+  id    String @id @default(cuid())
+  label String @unique
+
+  scope String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+  createdById String?
+
+  members UserOnGroup[]
+
+  questions   Question[]
+  collections Collection[]
+  tags        Tag[]
+  evaluations Evaluation[]
+}
+
+model UserOnGroup {
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  group    Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId  String
+  selected Boolean @default(false)
+
+  @@id([userId, groupId])
+}
+
+
+enum QuestionSource {
+  BANK // Question bank
+  EVAL // Question is part of an evaluation
+  COPY // Question is a copy of another question
+}
+
+model Question {
+  id     String         @id @default(cuid())
+  type   QuestionType
+  source QuestionSource @default(BANK)
+
+  title   String
+  content String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  multipleChoice MultipleChoice?
+  trueFalse      TrueFalse?
+  essay          Essay?
+  code           Code?
+  web            Web?
+  database       Database?
+
+  collection CollectionToQuestion[]
+
+  sourceQuestionId String? // Field indicating the ID of the source question if this is a copy
+  sourceQuestion   Question?  @relation("SourceQuestion", fields: [sourceQuestionId], references: [id], onDelete: SetNull)
+  copiedQuestions  Question[] @relation("SourceQuestion")
+
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId String
+
+  studentAnswer StudentAnswer[]
+  questionToTag QuestionToTag[]
+  evaluation    EvaluationToQuestion[]
+}
+
+enum MultipleChoiceGradingPolicyType {
+  ALL_OR_NOTHING
+  GRADUAL_CREDIT
+}
+
+model MultipleChoice {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+  options    Option[]
+
+  gradingPolicy MultipleChoiceGradingPolicyType @default(GRADUAL_CREDIT)
+
+  activateStudentComment Boolean  @default(false) // Allow student to provide a comment/justification
+  studentCommentLabel String?                     // Label for the student comment field
+  activateSelectionLimit Boolean @default(false)  // Activate the selection limit, 
+  selectionLimit        Int?    @default(0)       // The number of correct options that the student can select, depends on the number of correct options
+}
+
+model Option {
+  id               String         @id @default(cuid())
+  order            Int            @default(0)
+  multipleChoice   MultipleChoice @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId       String
+  text             String?
+  isCorrect        Boolean        @default(false)
+
+  studentAnswerMultipleChoice StudentAnswerMultipleChoice[]
+}
+
+model TrueFalse {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+  isTrue     Boolean?
+}
+
+model Essay {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+
+  solution String?
+}
+
+model SandBox {
+  image     String
+  beforeAll String?
+
+  Code       Code   @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String @id @unique
+}
+
+model TestCase {
+  index      Int
+  code       CodeWriting @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String
+
+  exec           String
+  input          String
+  expectedOutput String
+
+  @@id([index, questionId])
+}
+
+enum CodeQuestionType {
+  codeWriting
+  codeReading
+}
+
+model Code {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+
+  language String?
+
+  sandbox SandBox?
+
+  codeType CodeQuestionType @default(codeWriting)
+
+  codeWriting CodeWriting?
+  codeReading CodeReading?
+}
+
+model CodeReading {
+  question   Code   @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String @id
+
+  studentOutputTest Boolean @default(false)
+
+  contextExec String?
+  contextPath String?
+  context     String?
+
+  snippets CodeReadingSnippet[]
+}
+
+model CodeReadingSnippet {
+  id String @id @default(cuid())
+
+  codeReading CodeReading @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId  String
+
+  order   Int     @default(0)
+  snippet String?
+  output  String?
+
+  studentAnswerCodeReadingOutput StudentAnswerCodeReadingOutput[]
+}
+
+model CodeWriting {
+  question   Code   @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String @id
+
+  testCases TestCase[]
+
+  solutionFiles CodeToSolutionFile[]
+  templateFiles CodeToTemplateFile[]
+
+  files File[] // to casdade delete files
+}
+
+model CodeToSolutionFile {
+  code       CodeWriting @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String
+
+  order Int @default(0)
+
+  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId String @unique
+
+  @@id([questionId, fileId])
+}
+
+model CodeToTemplateFile {
+  code       CodeWriting @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String
+
+  order Int @default(0)
+
+  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId String @unique
+
+  studentPermission StudentPermission @default(UPDATE)
+
+  @@id([questionId, fileId])
+}
+
+model Database {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+
+  image           String?                   @default("")
+  solutionQueries DatabaseToSolutionQuery[]
+  databaseQueries DatabaseQuery[]
+}
+
+model DatabaseToSolutionQuery {
+  database   Database @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String
+
+  query   DatabaseQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
+  queryId String        @unique
+
+  outputId String?              @unique
+  output   DatabaseQueryOutput? @relation(fields: [outputId], references: [id])
+
+  @@id([questionId, queryId])
+}
+
+enum DatabaseQueryOutputType {
+  TABULAR
+  SCALAR
+  TEXT
+}
+
+enum DatabaseQueryOutputStatus {
+  SUCCESS
+  ERROR
+  WARNING
+  RUNNING
+  NEUTRAL
+}
+
+enum DatabaseDBMS {
+  POSTGRES
+  MYSQL
+  MARIADB
+  MSSQL
+  SQLITE
+}
+
+model DatabaseQuery {
+  id String @id @default(cuid())
+
+  order Int @default(0)
+
+  database   Database? @relation(fields: [questionId], references: [questionId], onDelete: Cascade) // to casdade delete queries
+  questionId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title       String?
+  description String?
+
+  lintActive Boolean @default(false)
+  lintRules  String?
+  lintResult Json?
+
+  content  String?
+  template String? // not used for users answer
+
+  studentPermission StudentPermission @default(UPDATE)
+
+  testQuery        Boolean                     @default(false)
+  queryOutputTests DatabaseQueryToOutputTest[]
+
+  studentAnswerDatabaseToQuery StudentAnswerDatabaseToQuery?
+  databaseToSolutionQuery      DatabaseToSolutionQuery?
+
+  // Used for cascade delete,
+  // we can have 2 outputs for the same query, users answer and solution when in context of the users answer
+  databaseQueryOutput DatabaseQueryOutput[]
+}
+
+model File {
+  id String @id @default(cuid())
+
+  code       CodeWriting @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
+  questionId String
+
+  path    String
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  codeToSolutionFile CodeToSolutionFile?
+  codeToTemplateFile CodeToTemplateFile?
+  studentAnswerCode  StudentAnswerCodeToFile?
+  annotation         Annotation?
+}
+
+model StudentAnswerDatabaseToQuery {
+  studentAnswerDatabase StudentAnswerDatabase @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail             String
+  questionId            String
+
+  query   DatabaseQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
+  queryId String        @unique
+
+  studentOutputId  String? @unique
+  solutionOutputId String? @unique
+
+  studentOutput DatabaseQueryOutput? @relation("StudentOutputRelation", fields: [studentOutputId], references: [id])
+
+  @@id([userEmail, questionId, queryId])
+}
+
+model StudentAnswerCodeToFile {
+  studentAnswerCode StudentAnswerCodeWriting @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail         String
+  questionId        String
+
+  order Int @default(0)
+
+  file   File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId String @unique
+
+  studentPermission StudentPermission @default(UPDATE)
+
+  @@id([userEmail, questionId, fileId])
+}
+
+model DatabaseQueryOutput {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  output Json
+
+  status DatabaseQueryOutputStatus @default(RUNNING)
+  type   DatabaseQueryOutputType   @default(TEXT)
+  dbms   DatabaseDBMS              @default(POSTGRES)
+
+  // relatio used for cascade delete
+  query   DatabaseQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
+  queryId String
+
+  studentAnswer StudentAnswerDatabaseToQuery? @relation("StudentOutputRelation")
+  querySolution DatabaseToSolutionQuery? // Reverse relation for DatabaseToSolutionQuery
+}
+
+model DatabaseQueryToOutputTest {
+  query DatabaseQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
+
+  queryId String
+  test    DatabaseQueryOutputTest
+
+  @@id([queryId, test])
+}
+
+enum DatabaseQueryOutputTest {
+  IGNORE_COLUMN_ORDER
+  IGNORE_ROW_ORDER
+  IGNORE_EXTRA_COLUMNS
+  INGORE_COLUMN_TYPES
+}
+
+model Web {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @id
+
+  solutionHtml String?
+  solutionCss  String?
+  solutionJs   String?
+
+  templateHtml String?
+  templateCss  String?
+  templateJs   String?
+}
+model Tag {
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  groupId   String
+
+  questionToTag QuestionToTag[]
+
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, label]) // Composite primary key
+  @@unique([groupId, label])
+}
+
+model QuestionToTag {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  tag        Tag      @relation(fields: [groupId, label], references: [groupId, label], onDelete: Cascade)
+  groupId    String
+  label      String
+
+  @@id([questionId, groupId, label]) // Composite primary key
+}
+
+// Order is important here
+enum EvaluationPhase {
+  NEW
+  SETTINGS
+  COMPOSITION
+  REGISTRATION
+  IN_PROGRESS
+  GRADING
+  FINISHED
+}
+
+enum EvaluationStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum UserOnEvaluationAccessMode {
+  LINK_ONLY // Everyone with the link can access
+  LINK_AND_ACCESS_LIST // Access requires having the link and being in the access list
+}
+
+model Evaluation {
+  id String @id @default(cuid())
+
+  label      String?
+  conditions String?
+  status     EvaluationStatus @default(ACTIVE)
+  phase      EvaluationPhase  @default(SETTINGS)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  durationActive Boolean @default(false)
+  durationHours Int? @default(0)
+  durationMins  Int? @default(0)
+
+  startAt DateTime?
+  endAt   DateTime?
+
+  showSolutionsWhenFinished Boolean @default(false)
+  consultationEnabled      Boolean @default(true)
+
+  accessMode UserOnEvaluationAccessMode @default(LINK_ONLY)
+  accessList Json? 
+
+  students              UserOnEvaluation[]
+  
+  evaluationToQuestions EvaluationToQuestion[]
+
+  group                               Group                                 @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId                             String
+  userOnEvaluationDeniedAccessAttempt UserOnEvaluationDeniedAccessAttempt[]
+}
+
+model Collection {
+  id    String @id @default(cuid())
+  label String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  collectionToQuestions CollectionToQuestion[]
+
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId String
+
+  @@unique([groupId, label])
+}
+
+model CollectionToQuestion {
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId String
+  question     Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId   String
+
+  order  Int   @default(0)
+  points Float @default(4)
+
+  @@id([collectionId, questionId])
+}
+
+model EvaluationToQuestion {
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  evaluationId String
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String  
+
+  points Float @default(0)
+  order  Int   @default(0)
+
+  @@id([evaluationId, questionId])
+}
+
+enum UserOnEvaluationStatus {
+  IN_PROGRESS
+  FINISHED
+}
+
+model UserOnEvaluationDeniedAccessAttempt {
+  user         User     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail    String
+  evaluationId String
+  attemptedAt  DateTime @default(now())
+
+  evaluation Evaluation @relation(fields: [evaluationId], references: [id])
+
+  @@id([userEmail, evaluationId])
+}
+model UserOnEvaluation {
+  user      User   @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail String
+
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  evaluationId String
+
+  registeredAt DateTime  @default(now())
+  finishedAt   DateTime?
+
+  status UserOnEvaluationStatus @default(IN_PROGRESS)
+
+  // Tracking session changes during the evaluation
+  originalSessionToken String? // The session token stored at the registration time
+  hasSessionChanged    Boolean @default(false) // Flag to indicate if the session has changed
+  sessionChangeDetectedAt DateTime? // Time when the session change was detected
+
+  @@id([userEmail, evaluationId])
+}
+
+enum StudentAnswerStatus {
+  MISSING
+  IN_PROGRESS
+  SUBMITTED
+}
+
+model StudentAnswer {
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  user      User   @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail String
+
+  status StudentAnswerStatus @default(MISSING)
+
+  multipleChoice StudentAnswerMultipleChoice?
+  trueFalse      StudentAnswerTrueFalse?
+  essay          StudentAnswerEssay?
+  code           StudentAnswerCode?
+  web            StudentAnswerWeb?
+  database       StudentAnswerDatabase?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentGrading StudentQuestionGrading?
+
+  annotations Annotation[]
+
+  @@id([userEmail, questionId])
+}
+
+enum AnnotationEntityType {
+  CODE_WRITING_FILE
+}
+
+model Annotation {
+  // This model should be used to store annotations for a specific student answer
+  // It should be used for a number of different types of questions, thus having an auto-incrementing id (main entity) raher than a composite key
+
+  id             String   @id @default(cuid())
+  
+  studentAnswer  StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail      String
+  questionId     String
+
+  entityType     AnnotationEntityType @default(CODE_WRITING_FILE)
+  
+  // When attached to student code file
+  fileId         String?  @unique
+  file           File?    @relation(fields: [fileId], references: [id])
+
+  content        String   
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  createdBy      User?    @relation(fields: [createdById], references: [id])
+  createdById    String?
+
+  @@unique([entityType, fileId])
+}
+
+enum StudentQuestionGradingStatus {
+  UNGRADED
+  GRADED
+  AUTOGRADED
+}
+
+model StudentQuestionGrading {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  status         StudentQuestionGradingStatus @default(UNGRADED)
+  pointsObtained Float                        @default(0)
+
+  signedBy          User?   @relation(fields: [signedByUserEmail], references: [email])
+  signedByUserEmail String?
+
+  comment String?
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerMultipleChoice {
+  id            String        @id @default(cuid())
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  options Option[]
+
+  comment String?
+
+  @@unique([userEmail, questionId])
+}
+
+model StudentAnswerTrueFalse {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  isTrue Boolean?
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerEssay {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  content String?
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerCode {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  codeType    CodeQuestionType          @default(codeWriting)
+  codeWriting StudentAnswerCodeWriting?
+  codeReading StudentAnswerCodeReading?
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerCodeWriting {
+  studentAnswerCode StudentAnswerCode @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail         String
+  questionId        String
+
+  files StudentAnswerCodeToFile[]
+
+  testCaseResults TestCaseResult[]
+
+  allTestCasesPassed Boolean @default(false)
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerCodeReading {
+  studentAnswerCode StudentAnswerCode @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail         String
+  questionId        String
+
+  outputs StudentAnswerCodeReadingOutput[]
+
+  @@id([userEmail, questionId])
+}
+
+enum StudentAnswerCodeReadingOutputStatus {
+  NEUTRAL
+  MATCH
+  MISMATCH
+}
+
+model StudentAnswerCodeReadingOutput {
+  questionId  String
+  userEmail   String
+  snippetId   String
+  
+  codeReadingSnippet CodeReadingSnippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  
+  studentAnswerCodeReading StudentAnswerCodeReading @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  
+  output String?
+  status StudentAnswerCodeReadingOutputStatus @default(NEUTRAL)
+
+  @@id([questionId, userEmail, snippetId])
+}
+
+model StudentAnswerDatabase {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  queries StudentAnswerDatabaseToQuery[]
+
+  @@id([userEmail, questionId])
+}
+
+model TestCaseResult {
+  userEmail  String
+  questionId String
+  index      Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  studentAnswerCode StudentAnswerCodeWriting @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+
+  exec           String
+  input          String
+  output         String
+  expectedOutput String
+
+  passed Boolean
+
+  @@id([index, userEmail, questionId])
+}
+
+model StudentAnswerWeb {
+  studentAnswer StudentAnswer @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail     String
+  questionId    String
+
+  html String?
+  css  String?
+  js   String?
+
+  @@id([userEmail, questionId])
+}
+
+model StudentAnswerCodeHistory {
+  // studentAnswerCode StudentAnswerCode @relation(fields: [userEmail, questionId], references: [userEmail, questionId], onDelete: Cascade)
+  userEmail  String
+  questionId String
+
+  createdAt DateTime @default(now())
+
+  code String?
+
+  @@id([userEmail, questionId, createdAt])
+}
