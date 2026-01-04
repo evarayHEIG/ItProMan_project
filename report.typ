@@ -366,6 +366,8 @@ Le cluster K3s était opérationnel, accessible via le kubeconfig généré, et 
 
 L'intégration des deux phases a permis de réaliser un déploiement complet de l'application OpenDidac sur une infrastructure cloud AWS. Quelques changements mineurs ont été nécessaires pour adapter les configurations Kubernetes à l'environnement cloud, notamment la gestion des nouveaux endpoints et des adresses IP.
 
+Ces changements ont également été effectués à l'aide de l'IA. Bien que toutes les bonnes pratiques ne soient pas respectées et que la puissance de tous les nœuds ne soit pas pleinement utilisée, l'application reste fonctionnelle et accessible.
+
 #figure(image("images/dep_opendidac_aws.png", width: 75%), caption: [ Déploiement complet d'OpenDidac sur AWS. ])
 
 Pour tout essai, l'application reste disponible à l'adresse suivante :
