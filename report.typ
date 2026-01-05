@@ -64,6 +64,14 @@
 
 = Résumé
 
+Ce rapport, réalisé dans le cadre du Master of Science in Engineering (MSE) de la HES-SO, explore le potentiel de l'intelligence artificielle générative (IAG) pour automatiser la phase de déploiement du cycle de vie de développement logiciel (SDLC). L'objectif central est d'évaluer l'efficacité de l'approche « vibe-coding », qui est un mode de développement assisté par des agents autonomes, pour automatiser le provisionnement d'infrastructures via Terraform sur AWS et l'orchestration de conteneurs avec Kubernetes. L’expérimentation repose sur le déploiement de la l'application web open-source OpenDidac, développée par l'HEIG-VD. L'outil principal utilisé est Windsurf, un environnement de développement intégré (IDE) doté de capacités d'IA générative en mode agent. Le modèle d'IA sélectionné est GPT-5 (medium reasoning), reconnu pour ses performances en programmation (décembre 2025).
+
+Les résultats mettent en évidence une disparité de performance selon les technologies : l'IAG a généré avec succès 95 % des manifestes Kubernetes en appliquant rigoureusement les standards de l'écosystème (Kustomize, Secrets, sondes de santé). En revanche, l'automatisation de Terraform s'est révélée plus laborieuse, plafonnant à 80 % de code généré après plus de dix itérations. L'IA a montré des limites structurelles notables, produisant un code redondant et monolithique nécessitant une correction humaine significative. Au global, environ 87,5 % du code de déploiement a été produit par l'IA, ce qui est un résultat prometteur.
+
+En conclusion, si l’IAG agit comme un catalyseur puissant pour le prototypage rapide et la réduction du code répétitif (« boilerplate »), elle ne peut se substituer à une expertise d'ingénierie solide. Il faut souligner que, sans une supervision humaine critique, les risques de dettes techniques et d'erreurs architecturales sont élevés. Enfin, sur le plan éducatif, une délégation excessive à l'IA chez les débutants peut entraver l'acquisition des compétences fondamentales, rendant l'apprentissage manuel préalable indispensable.
+
+#strong[Mots-clés :] Intelligence Artificielle (IA) Générative (IAG), Vibe-coding, SDLC, Déploiement IT, Infrastructure as Code (IaC), Terraform, Kubernetes, AWS, Windsurf, Automatisation, Cloud Computing, GPT-5.
+
 #pagebreak()
 
 #set heading(numbering: "1.")
@@ -238,7 +246,8 @@ Pour évaluer la pertinence des résultats obtenus avec l'IA générative, les c
 - *Coût*: Est-ce que l’utilisation des outils et services d'IA générative a engendré un coût élevé ?
 
 = Références <sec:references>
-TODO: renommer la section ?
+
+Cette section présente les différentes sources consultées pour nous informer sur l'utilisation de l'IA générative dans le déploiement IT, ainsi que les outils cloud utilisés pour le déploiement de l'application OpenDidac. Un état de l'art léger est aussi présenté, regroupant des articles académiques récents et des benchmarks comparant les performances des modèles d'IA générative dans des tâches de programmation.
 
 == Exploration des outils d'IA pour le déploiement IT
 
@@ -277,16 +286,32 @@ Nous avons utilisés plusieurs outils cloud pour le déploiement de l'applicatio
 == Phase de déploiement
 La phase de déploiement a été réalisée en deux étapes distinctes mais complémentaires : d'abord le déploiement de l'application OpenDidac et de ses dépendances sur un cluster Kubernetes, puis le provisionnement de l'infrastructure cloud via Terraform. Cette approche progressive a permis de valider le fonctionnement de l'application dans un environnement local avant de la déployer sur une infrastructure cloud.
 
-==== Architecture et connectivité
+=== Prompts utilisés
 
-L'architecture applicative dans Kubernetes finale se compose de :
+Des prompts ont été utilisés pour créer les fichiers de déploiement Kubernetes et Terraform. Voici les prompts de départ utilisés pour chaque étape:
+
+- #strong[Déploiement PostgreSQL sur Kubernetes]: #emph[Je veux déployer la db postgres de l'application (pas celle de keycloak) dans un cluster kurbernetes. Crée les fichiers yaml nécessaires.]
+- #strong[Déploiement Keycloak sur Kubernetes]: #emph[Je veux déployer l'identification avec keycloak dans un cluster kubernetes. Crée les fichiers yaml nécessaires.]
+- #strong[Déploiement OpenDidac sur Kubernetes]: #emph[Tu es un expert en déploiement Kubernetes. J'aimerai que tu me déploies cette application Opendidac, sur la partie frontend/backend (NextJS). J'ai déjà une partie du déploiement réalisé pour la base de donnée de l'application et pour keycloak, déjà présent dans le dossier kube. J'aimerais que tu continues dans le dossier app pour générer tous les fichiers nécessaires à lancer l'application au complet. Définis moi un Pod pour l'app NextJS et un load
+balancer devant.]
+- #strong[Déploiement Terraform sur AWS]: #emph[okay tu peux me créer un code Terraform capable de déployer une infrastructure kubernetes j'aimerais un master et 3 enfants sur aws. Pour ce faire part du principe que j'ai déjà les
+credentials AWS dans ma machine. En ce qui concerne la clef SSH pour les machine on va aussi la créer à la volée pour automatiser au plus la chose. On va installer k3s car c'est plus facile.]
+
+On constate des styles différents entre les prompts, reflétant les préférences individuelles des membres de l'équipe. Certains prompts sont plus détaillés, tandis que d'autres sont plus concis. Cette diversité a finalement permis d'explorer différentes approches pour guider l'IA générative dans la création des fichiers de déploiement. Pour les déploiements Kubernetes, ces prompts se sont avérés suffisants pour obtenir des résultats fonctionnels immédiatement. En revanche, pour le déploiement Terraform, des ajustements et des itérations supplémentaires ont été nécessaires pour atteindre un résultat pleinement opérationnel. Les discussions complètes avec l'IA générative, incluant les prompts, les réponses et les fichiers générés, sont disponibles dans le repository GitHub du projet mis en annexe.
+
+=== Architecture et connectivité
+
+L'architecture applicative dans Kubernetes finale se compose de trois composants:
+- #strong[PostgreSQL]: Base de données relationnelle hébergeant les données de l'application OpenDidac.
+- #strong[Keycloak]: Serveur d'identité gérant l'authentification et l'autorisation des utilisateurs.
+- #strong[Application web]: Backend et frontend de l'application OpenDidac.
 
 #figure(image("images/dep_app.png", width: 50%), caption: [ Architecture applicative dans Kubernetes.])
 
 
 === Déploiement Kubernetes
 
-Le déploiement sur Kubernetes a été réalisé en trois phases correspondant aux composants principaux de l'application : la base de données PostgreSQL, le serveur d'identité Keycloak, et l'application web OpenDidac.
+Le déploiement sur Kubernetes a été réalisé en trois phases correspondant aux composants principaux de l'application : la base de données PostgreSQL, le serveur d'identité Keycloak, et l'application web OpenDidac. Ci-dessous, les résultats obtenus pas l'IA générative pour chaque composant sont présentés.
 
 ==== Bonnes pratiques et organisation
 
@@ -313,19 +338,19 @@ Vérification pour valider le déploiement :
 
 ==== Keycloak (Identity Provider)
 
-Le déploiement de Keycloak a présenté plus de complexité, nécessitant une configuration post-déploiement et la résolution d'erreurs liées aux variables d'environnement. L'IA générative a généré :
+Le déploiement de Keycloak a présenté plus de complexité, nécessitant une configuration post-déploiement et la résolution d'erreurs liées aux variables d'environnement, qui a finalement dû être faite à la main. L'IA générative a généré :
 
 - *Deployment* : Configuration d'un Deployment Keycloak avec l'image officielle `quay.io/keycloak/keycloak`.
 - *Variables d'environnement* : Définition des credentials administrateur via un Secret (`KEYCLOAK_ADMIN`, `KEYCLOAK_ADMIN_PASSWORD`) et configuration de la connexion à la base de données PostgreSQL.
 - *Service et Ingress* : Exposition de Keycloak via un Service ClusterIP et un Ingress pour permettre l'accès externe avec un nom de domaine personnalisé.
 
-*Configuration manuelle requise* : Après le déploiement, une configuration manuelle dans l'interface Keycloak a été nécessaire pour :
+Après le déploiement, une configuration manuelle dans l'interface Keycloak a été nécessaire pour :
 
 1. Créer un realm dédié pour l'application OpenDidac.
 2. Configurer un client OIDC avec les URLs de callback appropriées.
 3. Créer des utilisateurs de test avec les rôles nécessaires.
 
-L'IA générative a fourni des instructions détaillées pour ces étapes, facilitant la configuration.
+L'IA générative a fourni une marche à suivre fonctionnelle pour mener à bien cette configuration.
 
 *Résolution d'erreurs* : L'IA générative a aidé à diagnostiquer et corriger plusieurs erreurs :
 
@@ -346,22 +371,20 @@ Le provisionnement de l'infrastructure pour héberger le cluster Kubernetes sur 
 
 ==== Bonnes pratiques non respectées
 
-Face à ces corrections ponctuelles, une refactorisation majeure a été demandée pour encapsuler toute la logique dans des structures de données complexes.
-
 Contrairement au déploiement Kubernetes, le code Terraform généré ne respectait pas toujours les bonnes pratiques :
 
 - *Pas de modules* : Le code était monolithique, sans réutilisation via des modules Terraform.
 - *Commentaires excessifs ou manquants* : Alternance entre des commentaires trop verbeux et des sections sans documentation.
 - *Pas de validation* : Aucune validation des variables.
 
-Ces manquements illustrent que l'IA générative excelle dans la génération rapide de code fonctionnel, mais nécessite une supervision humaine pour les aspects de qualité et de maintenabilité.
+Une refactorisation majeure a donc été demandée pour encapsuler toute la logique dans des structures de données complexes. Ces manquements illustrent que l'IA générative excelle dans la génération rapide de code fonctionnel, mais nécessite une supervision humaine pour les aspects de qualité et de maintenabilité. 
 
 #figure(image("images/dep_arch.png", width: 50%), caption: [ Architecture AWS.])
 
 
 ==== Succès final
 
-Après de nombreuses itérations (environ 10-15 échanges avec l'IA), l'infrastructure a finalement été provisionnée avec succès :
+Après de nombreuses itérations (environ 10-15 échanges avec l'IA, consultables en annexe) et quelques ajustements manuels, l'infrastructure a finalement été provisionnée avec succès :
 
 #figure(image("images/dep_aws.png", width: 75%), caption: [ Infrastructure AWS provisionnée avec succès. ])
 
@@ -411,7 +434,7 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 #strong[Au niveau général :]
 - Le temps d'amorçage du projet a été considérablement réduit grâce à l'IA générative, qui a permis de générer rapidement tous les fichiers de configuration de base.
 - L'utilisation de l'IA générative permet une approche d'expérimentation rapide. En effet, il est très facile d'obtenir rapidement un déploiement fonctionnel, même sans maîtrise approfondie des technologies utilisées. Cela permet de tester différentes configurations et d'itérer rapidement mais est évidemment à éviter en production sans une revue humaine approfondie.
-- L'IA générative permet la decouvertes de nouvelles approches que le développeur n'aurait pas envisagées. Par exemple, dans notre cas, l'IA a suggéré l'utilisation de certaines organisation de ficihiers et de ressources Kubernetes que nous n'aurions pas pensé à utiliser, à cause de notre manque d'expérience avec cet outil.
+- L'IA générative permet la decouvertes de nouvelles approches que le développeur n'aurait pas envisagées. Par exemple, dans notre cas, l'IA a suggéré l'utilisation de certaines organisations de fichiers et de ressources Kubernetes que nous n'aurions pas pensé à utiliser, à cause de notre manque d'expérience avec cet outil.
 - La résolution d'erreurs classiques est grandement facilitée par l'IA générative, qui peut analyser les messages d'erreur et proposer des solutions adaptées. Cela a permis de surmonter rapidement des obstacles techniques, sans devoir lire en détail la documentation officielle, comme illustré dans l'exemple ci-dessous.
 
 #figure(image("images/correction_erreur.png"), caption: [ Exemple d'aide à la résolution d'erreur par l'IA générative])
@@ -450,13 +473,13 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 
 
 == Défis rencontrés
-=== Kubernetes
-- *Fusion des 3 parties difficile*
+#strong[Pour Kubernetes :]
+- *Fusion des 3 parties difficile*: L'IA a eu du mal à fusionner les trois parties du déploiement (PostgreSQL, Keycloak, OpenDidac) en un seul déploiement cohérent. Chaque partie fonctionnait bien individuellement, mais lorsque nous avons demandé à l'IA de les combiner, elle a eu du mal à gérer les dépendances entre les composants, notamment la connexion d'OpenDidac à Keycloak.
 - *Compréhension et direction générale*: Quand nous étions bloqué sur cette fusion, nous étions obligés de comprendre l'architecture de communication entre conteneurs, pour comprendre les erreurs liée à Keycloak. Comme le LLM tournait en rond, nous avons du choisir une autre direction, c'est à dire de revenir sur une ancienne version de l'application qui utilisait une instance Keycloak en local. Pour choisir cette direction, nous avons du lire le README, qui mentionnait clairement que Keycloak en local ne pouvait plus fonctionner. Nous aurions gagné du temps si le LLM avait également lu le README et s'il nous avait tout de suite demandé de faire une choix parmi une liste d'options possibles.
-- *Verbosité des réponses*: Durant les phrases de réflexions et de résultats final, le LLM génère beaucoup de texte, souvent très verbeux. Une partie du texte est complètement inutile pour les humains. Par exemple, les "pensées" du LLM peuvent être très longues et inutiles: #quote("Je vais mettre à jour le fichier terraform.tfvars.json pour adopter la nouvelle structure d’objet cluster, puis je mettrai à jour la todo list pour marquer la revue des tfvars comme terminée."). Au milieu des dizaines de lignes de texte, certaines informations ou choix importantes sont facilement loupée par un parcours humain. On est très loin d'un expert coach qui peut se concentrer sur les décisions à prendre, à rendre l'information concise et aider à avancer à débloquer les problèmes un par un.
-- *Direction vague*: Quand il y a des problèmes et que l'humain n'a pas pris de décision claire sur la direction à prendre, le LLM navigue dans différentes directions à la fois.
+- *Verbosité des réponses*: Durant les phrases de réflexions et de résultats final, le LLM génère beaucoup de texte, souvent très verbeux. Une partie du texte est complètement inutile pour les humains. Par exemple, les "pensées" du LLM peuvent être très longues et inutiles: #quote("Je vais mettre à jour le fichier terraform.tfvars.json pour adopter la nouvelle structure d’objet cluster, puis je mettrai à jour la todo list pour marquer la revue des tfvars comme terminée."). Au milieu des dizaines de lignes de texte, certaines informations ou choix importants sont facilement loupés par une lecture humaine. On est très loin d'un expert coach qui peut se concentrer sur les décisions à prendre, à rendre l'information concise et aider à avancer à débloquer les problèmes un par un.
+- *Direction vague*: Quand il y a des problèmes et que l'humain n'a pas pris de décision claire sur la direction à prendre, le LLM navigue dans différentes directions à la fois et ne reste pas concentré sur une seule. 
 
-=== Terraform
+#strong[Pour Terraform :]
 - *Prérequis*: l'IA ne mentionne pas les prérequis d'accès ou de permissions nécessaires au déploiement sur AWS, il faut connaître un minimum le fonctionnement des services et avoir configuré sa machine pour être connecté à AWS.
 - *Qualité du code Terraform moyenne/mauvaise*: Massimo a été confronté à une qualité de code moyenne voir mauvaise, notamment à cause une quantité importante de duplications. Au lieu de créer des abstractions, l'IA qui ne peut pas se fatiguer des copier-coller, duplique sans problème des dizaines d'éléments et avec le même paramètre légèrement adapté. Le LLM part régulièrement dans des directions trop complexes, alors que des alternatives plus simples existent. Massimo a du lui demander plusieurs fois d'améliorer la structure pour améliorer la lisibilité. L'hypothèse est que contrairement au YAML pour Kubernetes, il existe plusieurs approches valides dans le language de Terraform (HCL). La meilleure approche n'est pas toujours choisie par l'IA.
 - *Guidage important*: Pour corriger la qualité du code moyenne, de nombreuses itérations ont été nécessaires. Le guidage régulier est requis et il doit contenir des pistes précises.
@@ -464,47 +487,96 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 - *Les fichiers rules.md non efficace*: Pour tenter que notre LLM utilise directement les bonnes pratiques, nous avons défini un fichier de règles. A nombreuses reprises les directives, pourtant courtes, objectives et claires, n'ont pas été respectées. Il est difficile de déterminer si l'existence de ce fichier ait eu un impact, au vu des mauvais résultats obtenus.
 - *Le LLM fonce dans le mur si on le lui demande*: A une occasion, l'approche de correction que Massimo a proposé n'était pas possible techniquement. Pourtant l'IA a généré un résultat qui correspondait à cette approche, contrairement à un expert humain qui aurait su que c'était impossible ou qui aurait pu le découvrir en le testant.
 
-=== Autres défis en général
+#strong[Au niveau général :]
 
 - *Tendance à minimiser les interactions*: L'usage des LLM est financé en fonction de l'usage, en comptant chaque message un certain nombre de crédit. Cette approche permet de payer un coût faible à l'essai, mais a tendance à minimiser les prompts.
 - *Evaluation difficile de l'impact du prompt engineering*: Il est difficile de juger de la qualité de nos prompts en fonction des résultats, comme les difficultés des tâches ne sont pas comparables. Parfois, une tâche simple peut être très bien faite avec peu d'information. A d'autres occasions, donner un rôle "d'expert Kubernetes" ne suffit pas à le faire devenir expert dans la technologie et la compréhension d'une 
 - *Générations lentes et ennuyantes*: Cela dépend bien sûr du service et du modèle, mais attendre 5 minutes pour qu'une correction de 5 caractères soit faite est bien frustrante. Le temps de "réflexion" ne varie pas en fonction de la complexité de la tâche. Pour éviter cette limite, nous devrions changer de LLM pour des questions faciles.
-- *Léger retard technologique*: Les versions des plugins Terraform utilisés avaient un léger retard, certaines API ont changées depuis. Cette limite est basée sur la date d'entrainement du LLM ou des capacités limitées d'accès aux dernières documentations en ligne.
-- *Temps de relecture*: le temps de rédaction étant grandement réduit, le temps de relecture des conversations et des fichiers modifiés devient important.
+- *Léger retard technologique*: Les versions des plugins Terraform utilisés avaient un léger retard, certaines API ont changées depuis. Cette limite est basée sur la date d'entrainement du LLM ou des capacités limitées d'accès aux dernières documentations en ligne. Des hallucinations pourraient aussi en être la cause.
+- *Temps de relecture*: Le temps de rédaction étant grandement réduit, le temps de relecture des conversations et des fichiers modifiés devient important.
+
+#strong[Synthèse :]
+
+#table(
+  columns: (auto, 1fr),
+  align: (left, left),
+  stroke: 0.5pt,
+  inset: 10pt,
+  [*Catégorie*], [*Principaux défis*],
+  [Général], [
+    - Tendance à minimiser les interactions (coût en crédits)
+    - Évaluation difficile de l'impact du prompt engineering
+    - Générations lentes et parfois ennuyantes
+    - Verbosité excessive des réponses
+    - Léger retard technologique des versions
+    - Temps de relecture important
+  ],
+  [Kubernetes], [
+    - Difficulté à fusionner les composants en un déploiement cohérent
+    - Manque de compréhension de l'architecture globale
+    - Direction vague quand l'humain n'a pas pris de décision claire
+    - L'IA ne lit pas systématiquement la documentation projet (README)
+  ],
+  [Terraform], [
+    - Prérequis AWS non mentionnés
+    - Qualité de code moyenne avec beaucoup de duplication
+    - Guidage important et itérations nombreuses nécessaires
+    - Perte de temps globale comparé à une approche manuelle
+    - Fichiers rules.md peu efficaces
+    - L'IA peut foncer dans une impasse technique sans s'en rendre compte
+  ]
+)
 
 == Retour d'expérience du groupe
-TODO: ya besoin de plus que ce quil y a au dessus et en conclusion ???
+
+Notre retour d'expérience découle directement des bénéfices et défis observés. 
+
+- Nous avons constaté que l’IA générative permet de gagner un temps significatif sur les tâches répétitives et automatisables, mais qu’elle reste limitée dès qu’une réflexion ou de l’imagination sont nécessaires.
+- Dans le cadre du déploiement Kubernetes, nous avons pu obtenir des configurations fiables et entièrement exploitables, ce qui nous encourage à réutiliser cette approche pour de futurs projets.
+- Pour Terraform, l’IA est utile pour générer des fichiers de base, mais nous n’avons pas confiance dans la génération d’un déploiement complet.
+- Nous avons trouvé l’IA très pratique pour résoudre rapidement des erreurs simples. Nous continuerons à l’utiliser comme un assistant de dépannage.
+- Se cantonner au “vibe coding”, c’est-à-dire laisser l’IA générer le code de manière répétitive avec des échanges constants, s’est révélé frustrant, long et peu stimulant. Il est mieux de privilégier une utilisation mixte, combinant intervention humaine et assistance ciblée de l’IA.
 
 == Comparaison avec d'autres approches ou pratiques
 
-Comme le montre la @ialevels, nous avons défini 6 niveaux d'adoption de l'IA, pour cette comparaison. Tout à gauche, le niveau d'adoption zéro, sans aucune aide d'intelligence artificielle. Ensuite, nous avons les chatbot en ligne qui regroupent ChatGPT, Copilat Chat, et beaucoup d'autres. Ils sont accessibles via des sites web et permettent souvent de choisir entre différents LLM mises à disposition. Ces chatbots en ligne n'ont comme contexte que l'historique de conversation des messages fournis, et peuvent parfois faire également des recherches sur le web. Leur réponse ne peut être donnée quand dans l'interface de chat, leur changements doivent donc être intégrés à la main. Dans le contexte d'une base de code existante comme Opendidac, il aurait fallu lui donner le contenu de certains fichiers qui nous semblent pertinents, pour qu'il puisse comprendre la structure de l'application.
+Comme le montre la @ialevels, nous avons défini 5 niveaux d'adoption de l'IA, pour cette comparaison. Tout à gauche, le niveau d'adoption zéro, sans aucune aide d'intelligence artificielle. Ensuite, nous avons les chatbot en ligne qui regroupent ChatGPT, Copilat Chat, et beaucoup d'autres. Ils sont accessibles via des sites web et permettent souvent de choisir entre différents LLM mises à disposition. Ces chatbots en ligne n'ont comme contexte que l'historique de conversation des messages fournis, et peuvent parfois faire également des recherches sur le web. Leur réponse ne peut être donnée que dans l'interface de chat, les changements doivent donc être intégrés à la main. Dans le contexte d'une base de code existante comme Opendidac, il aurait fallu lui donner le contenu de certains fichiers qui nous semblent pertinents, pour qu'il puisse comprendre la structure de l'application, ce qui est fastidieux.
 
 Pour donner par défaut accès à suffisament de contexte, nous avons choisi l'option des IDE dédié, comme Cursor et Windsurf. En effet, le mode agent de Windsurf peut de lui-même décider d'aller lire les fichiers du projets qui lui sont utiles, afin de comprendre le projet ouvert dans l'IDE. Une fois l'architecture identifiée, il peut modifier des fichiers dans n'importe quelle partie du projet. Un panneau de conversation est intégré et permet de demander des modifications.
-#figure(image("schemas/ia-levels.png"), caption: [Niveaux d'adoption de l'IA, avec notre approche en bleu]) <ialevels>
+#figure(image("schemas/ia-levels.png", width: 80%), caption: [Niveaux d'adoption de l'IA, avec notre approche en bleu]) <ialevels>
 
-Les dernières approches qui poussent encore plus loin l'intégration sont les flottes d'agents en parallèle et les serveurs MCP. Nous n'avons exploré pas ces outils, pour limiter le temps de configuration et d'apprentissage, mais ils pourraient fournir une meilleure expérience. Au lieu d'avoir un seul agent, pourquoi ne pas en avoir plusieurs, avec différents rôles, pour gérer les étapes, découper en tâches, coder, revoir le résultat, tester le déploiement... Ces systèmes de flottes permettent de simuler les rôles d'une équipe de développement, pour résoudre des tâches plus complexes et une meilleure qualité finale. #footnote([Voir par exemple CrewAI: #link("https://www.crewai.com/")])
+Les dernières approches qui poussent encore plus loin l'intégration sont les flottes d'agents en parallèle et les serveurs MCP. Nous n'avons pas exploré ces outils, pour limiter le temps de configuration et d'apprentissage, mais ils pourraient fournir une meilleure expérience. Au lieu d'avoir un seul agent, pourquoi ne pas en avoir plusieurs, avec différents rôles, pour gérer les étapes, découper en tâches, coder, revoir le résultat, tester le déploiement... Ces systèmes de flottes permettent de simuler les rôles d'une équipe de développement, pour résoudre des tâches plus complexes et une meilleure qualité finale. #footnote([Voir par exemple CrewAI: #link("https://www.crewai.com/")])
 
 L'autre option qui n'est pas incompatible avec la précédente, consiste à donner accès à des outils ou ressources avancées via des serveurs MCP (Model Context Protocol) @ModelcontextprotocolDocs. Nous aurions pu utiliser un serveur MCP pour Kubernetes, permettant à notre LLM d'accéder à l'état du cluster et de créer des ressources, sans avoir de CLIs installés sur nos machines. Au lieu de nous donner des commandes `kubectl` pour lancer les services, pods et autres fichiers définis, une intégration d'un serveur MCP aurait pu permettre de lancer ces actions tout seul (après certaines approbations). @KubernetesMcpServerGithub
 
 = Conclusion
+
+== Points clés
+
+Nous avons réussi à déployer une application web complète (OpenDidac) sur un cluster Kubernetes hébergé sur AWS, en utilisant principalement de l'IA générative pour créer les fichiers de configuration nécessaires. Le déploiement Kubernetes a été particulièrement réussi, avec 95% du code généré par l'IA, respectant les bonnes pratiques de la communauté. Le déploiement Terraform a été plus complexe, nécessitant environ 80% de code généré par l'IA, mais avec des ajustements manuels pour améliorer la qualité et la maintenabilité du code. Ce déploiement a été réalisé dans l'IDE Windsurf, qui permet une intégration fluide avec l'IA générative. 
+
+Nous avons identifié plusieurs bénéfices, notamment le gain de temps significatif sur les tâches répétitives, la possibilité d'expérimentation rapide, et l'aide précieuse pour résoudre des erreurs courantes. Cependant, des défis subsistent, tels que la nécessité d'une supervision humaine pour garantir la qualité du code, les limitations dans la compréhension globale du projet par l'IA, et la gestion des directions techniques complexes. Globalement, cette expérience démontre le potentiel de l'IA générative pour accélérer les déploiements IT, tout en soulignant l'importance d'une collaboration étroite entre l'humain et la machine.
+
 == Bilan général
 Le déploiement par IA fonctionne correctement jusqu’à un certain niveau de complexité. Tout le code "boilerplate", une fois la direction choisie, peut facilement être rédigé par IA. Une fois la base définie, nous avons pu mieux cerner les limites de l’IA et la nécessité de cadrer son utilisation, en prenant certaines décisions stratégiques et techniques. Au final, nous pensons qu'un déploiement Cloud accéléré par l’IA permet de tester plus rapidement et plus souvent une infrastructure. La possibilité d'avoir rapidement un prototype fonctionnel, facilite l'accès aux déploiements staging durant le développement, ce qui peut s'apparenter à l’architecture exécutable définie par RUP.
 
-=== Perspectives
-Le domaine de l'IA est bien large et en constante évolution à un rythme effrené, qu'il serait bien long de lister toutes les possibilités d'exploration. Si le projet devait continuer, voici les sujets que nous prendrions en premier.
+== Contributions du travail // En quoi ce projet ou étude apporte une innovation dans la gestion de projet.
+
+Ce projet démontre concrètement comment l'IA générative peut être intégrée dans le processus de déploiement IT, en automatisant la création de fichiers de configuration pour Kubernetes et Terraform. Il met en lumière les avantages et les limites de cette approche, fournissant ainsi une base pour d'autres ingénieurs souhaitant exploiter l'IA dans leurs projets. En documentant les bénéfices, défis et retours d'expérience, ce travail contribue à une meilleure compréhension de l'utilisation pratique de l'IA générative dans le domaine du déploiement cloud, ouvrant la voie à des pratiques plus efficaces et innovantes dans la gestion de projets IT. Il est à noter que les outils liés à l'IA générative sont en plein essor et évolutent très rapidement. Ainsi, ce projet sert de référence actuelle (décembre 2025), mais devra être complété par des études futures pour suivre les avancées technologiques.
+
+== Perspectives
+Comme indiqué précédemment, le domaine de l’IA est vaste et en évolution rapide, rendant impossible un inventaire exhaustif de toutes les pistes d’exploration. Si le projet devait se poursuivre, voici les sujets que nous étudierions en premier.
 - *Explorer une intégration avancée des LLM avec des serveurs MCP et une flotte d'agents*. Cette option nous permettrait d'offir une boucle de feedback sur le fonctionnement de l'infrastructure au LLM, lui permettre d'inspecter l'état d'un cluster Kubernetes par lui-même ou encore de bénéficier de revues de code d'autres LLM en parallèle. Nous pourrions ainsi, avec un travail de configuration plus important en amont, avoir une orchestration plus fine du travail des LLM.
 - *Approfondir l’usage des rules* pour obtenir des résultats plus précis et mieux contrôlés. La longueur, le style et le type de règles à inclure ont probablement un impact sur leur efficacité.
-- Travailler le prompt engineering pour réduire le nombre d’itérations et améliorer la qualité du code généré. Tout comme les rules, la manière d'écrire nos prompts a probablement été étudié et comparé. Nous pourrions continuer les recherches existantes en approfondissant et adaptant les astuces pour le domaine du déploiement Cloud.
+- *Travailler le prompt engineering* pour réduire le nombre d’itérations et améliorer la qualité du code généré. Tout comme les rules, la manière d'écrire nos prompts a probablement été étudié et comparé. Nous pourrions continuer les recherches existantes en approfondissant et adaptant les astuces pour le domaine du déploiement Cloud.
 
-=== Recommandations
-Au terme de ce projet, voici ce que nous souhaiterions recommander à des collègues ingénieurs qui se demandent comment l'utiliser au mieux.
+= Recommandations
+Au terme de ce projet, voici ce que nous souhaiterions recommander à des collègues ingénieurs ou des étudiants qui souhaiteraient utiliser l’IA générative pour les aider dans leurs déploiements IT.
 
 *Pour l’industrie:*
-L’IA peut accélérer significativement un déploiement, surtout sur les premières étapes de mise en place de premières versions. Sans relecture des résultats, il est possible d'avoir des mauvaises surprises lors de problèmes en production, qui peuvent coûter très cher s'ils concernent la sécurité ou des erreurs de stratégie. Des erreurs de déploiement peuvent causer des pannes qui impactent fortement tout le business d'une entreprise, s'il concerne des services critiques. Elle ne doit pas être utilisée sans validation humaine, puisque seuls les humains pourront prendre la responsabilité finale de ce qui est déployé.
+L’IA peut accélérer significativement un déploiement, surtout sur les premières étapes de mise en place de premières versions. Sans relecture des résultats, il est possible d'avoir des mauvaises surprises lors de problèmes en production, qui peuvent coûter très cher s'ils concernent la sécurité ou des erreurs de stratégie. Des erreurs de déploiement peuvent causer des pannes qui impactent fortement tout le business d'une entreprise, s'il concerne des services critiques. l'IA générative ne doit _jamais_ être utilisée sans validation humaine, puisque seuls les humains pourront prendre la responsabilité finale de ce qui est déployé.
 
 *Pour l’éducation:*
-Le contexte est à notre avis bien différent, comme le but principal est d'acquérir des nouvelles compétences sur des technologies spécifiques. L'expérience de Eva et Samuel sur Kubernetes, s'est révelée peu bénéfique en terme de connaissances et compétences. A part avoir appris quelques commandes `kubectl` et découvert de nouvelles possibilités inconnues auparavant, la contribution éducative à Kubernetes en déleguant le travail à une IA, est faible.
-Nous recommandons ainsi vivement d'encourager la découverte manuelle des outils avant de s’appuyer sur l’IA. La première phrase de découverte, recherche personnelle et de familiarisation aux concepts, bonnes pratiques et à la syntaxe s'ancre beaucoup mieux par l'effort et la réflexion. Une fois des bases acquises et qu'il devient possible de juger de la qualité d'une implémentation, l’IA peut aider à générer du code fonctionnel, mais il reste essentiel de comprendre ce qui est produit.
+Le contexte est à notre avis bien différent, comme le but principal est d'acquérir des nouvelles compétences sur des technologies spécifiques. L'expérience d'Eva et Samuel, en tant que débutants sur Kubernetes, s'est révelée peu bénéfique en terme de connaissances et compétences acquises. A part avoir appris quelques commandes `kubectl` et découvert de nouvelles ressources et bonnes pratiques de gestion des fichiers inconnues auparavant, la contribution éducative à Kubernetes en déleguant le travail à une IA, est faible. Nous recommandons ainsi vivement d'encourager la découverte manuelle des outils avant de s’appuyer sur l’IA. La première phrase de découverte, recherche personnelle et de familiarisation aux concepts, bonnes pratiques et à la syntaxe s'ancre beaucoup mieux par l'effort et la réflexion. Une fois des bases acquises et qu'il devient possible de juger de la qualité d'une implémentation, l’IA peut aider à générer du code fonctionnel, mais il reste essentiel de comprendre ce qui est produit.
 
 #pagebreak()
 
@@ -516,4 +588,7 @@ Nous recommandons ainsi vivement d'encourager la découverte manuelle des outils
 #bibliography("biblio.bib", title: "Bibliographie", style: "ieee", full: true)
 
 = Annexes
-Nous avons géré le projet dans un repos Git #link("https://github.com/evarayHEIG/ItProMan_project"). Nous y avons inclut quelques liens d'accès rapide dans le README. Le repository contient des exports des conversations complètes de Windsurf et les fichiers finaux qui permettent de déployer notre infrastructure.
+Les annexes se trouvent dans un repository publique GitHub #link("https://github.com/evarayHEIG/ItProMan_project"). Le contenu du repository est le suivant:
+- Export des conversations complètes de WindSurf
+- Fichiers finaux de déploiement Kubernetes
+- Fichiers finaux de déploiement Terraform
