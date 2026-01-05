@@ -1,7 +1,7 @@
 # Déploiement IT en "vibe-coding"
 > Chaos ou automatisation : l'IA générative face aux défis du déploiement IT
 
-Ce repository Git contient tous les fichiers créés pour le projet du cours ITProMan au master MSE à la HES-SO. Ce projet a été mené par Eva Ray, Samuel Roland, et Massimo Stefani. Nous avons choisi l'application [Opendidac](https://github.com/opendidac/opendidac) pour la déployer dans un cluster Kubernetes, mise en place à l'aide Terraform sur 4 instances EC2 sur AWS.
+Ce repository Git contient tous les fichiers créés pour le projet du cours ITProMan au master MSE à la HES-SO. Ce projet a été mené par Eva Ray, Samuel Roland, et Massimo Stefani. Nous avons choisi l'application [Opendidac](https://github.com/opendidac/opendidac) pour la déployer dans un cluster Kubernetes, mise en place à l'aide Terraform sur 4 instances EC2 sur AWS. Le coomit exact correspondant à la version déployée d'opendidac est le suivant : 732487f98226c37825cbe600be6cdf59f7289e18. 
 
 ## Accès rapide
 - [Rapport final en PDF](report.pdf)
