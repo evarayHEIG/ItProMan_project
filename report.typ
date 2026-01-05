@@ -64,7 +64,7 @@
 
 = Résumé
 
-Ce rapport, réalisé dans le cadre du Master of Science in Engineering (MSE) de la HES-SO, explore le potentiel de l'intelligence artificielle générative (IAG) pour automatiser la phase de déploiement du cycle de vie de développement logiciel (SDLC). L'objectif central est d'évaluer l'efficacité de l'approche « vibe-coding », qui est un mode de développement assisté par des agents autonomes, pour automatiser le provisionnement d'infrastructures via Terraform sur AWS et l'orchestration de conteneurs avec Kubernetes. L’expérimentation repose sur le déploiement de la l'application web open-source OpenDidac, développée par l'HEIG-VD. L'outil principal utilisé est Windsurf, un environnement de développement intégré (IDE) doté de capacités d'IA générative en mode agent. Le modèle d'IA sélectionné est GPT-5 (medium reasoning), reconnu pour ses performances en programmation (décembre 2025).
+Ce rapport, réalisé dans le cadre du Master of Science in Engineering (MSE) de la HES-SO, explore le potentiel de l'intelligence artificielle générative (IAG) pour automatiser la phase de déploiement du cycle de vie de développement logiciel (SDLC). L'objectif central est d'évaluer l'efficacité de l'approche « vibe-coding », qui est un mode de développement assisté par des agents autonomes, pour automatiser le provisionnement d'infrastructures via Terraform sur AWS et l'orchestration de conteneurs avec Kubernetes. L’expérimentation repose sur le déploiement de l'application web open-source OpenDidac, développée par l'HEIG-VD. L'outil principal utilisé est Windsurf, un environnement de développement intégré (IDE) doté de capacités d'IA générative en mode agent. Le modèle d'IA sélectionné est GPT-5 (medium reasoning), reconnu pour ses performances en programmation (décembre 2025).
 
 Les résultats mettent en évidence une disparité de performance selon les technologies : l'IAG a généré avec succès 95 % des manifestes Kubernetes en appliquant rigoureusement les standards de l'écosystème (Kustomize, Secrets, sondes de santé). En revanche, l'automatisation de Terraform s'est révélée plus laborieuse, plafonnant à 80 % de code généré après plus de dix itérations. L'IA a montré des limites structurelles notables, produisant un code redondant et monolithique nécessitant une correction humaine significative. Au global, environ 87,5 % du code de déploiement a été produit par l'IA, ce qui est un résultat prometteur.
 
@@ -82,7 +82,7 @@ La gestion de projets informatiques nécessite des méthodologies structurées p
 
 #figure(image("images/plc.png", width: 75%), caption: [ Position du SDLC dans le PLC ])
 
- Le cycle SDLC établit une séquence logique d'activités de développement organisées en phases distinctes. Plusieurs variantes du SDLC existent, avec un nombre variable de phases, selon la granularité recherchée. Puisque ce rapport porte sur l'intégration de l'IA générative dans la phase de déploiement du SDLC, nous adoptons le modèle en 7 phases, afin de pouvoir mettre en évidence celle-ci. Les 7 phases du SDLC sont les suivantes: la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), le test (testing), le déploiement (deployment) et la maintenance (maintenance) @SDLCphases.
+ Le cycle SDLC établit une séquence logique d'activités de développement organisées en phases distinctes. Plusieurs variantes du SDLC existent, avec un nombre variable de phases, selon la granularité recherchée. Puisque ce rapport porte sur l'intégration de l'IA générative dans la phase de déploiement du SDLC, nous adoptons le modèle en 7 phases, afin de pouvoir mettre en évidence celle-ci. Les 7 phases du SDLC sont les suivantes : la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), le test (testing), le déploiement (deployment) et la maintenance (maintenance) @SDLCphases.
 
 #figure(image("images/sdlc.png", width: 55%), caption: [ SDLC en 7 phases ])
 
@@ -93,7 +93,7 @@ Chaque phase du SDLC a un but bien précis. @SDLCphases @CourseBookITProMan
 - #strong[Conception]: La conception définit l’architecture du système par décomposition en composants, précise interfaces, données et choix technologiques, et fournit une spécification détaillée du système.
 - #strong[Implémentation]: L'implémentation concrétise cette architecture par le développement, l'intégration, les tests, l'installation du système, ainsi que la formation et la documentation nécessaires à son utilisation.
 - #strong[Test]: La phase de test a pour but de valider que le système développé a la qualité attendue pour la production. Elle inclut des tests unitaires, d'intégration, de système et d'acceptation utilisateur.
-- #strong[Déploiement]: C'est pendant la phase de déploiement que le logiciel développé est mis à disposition des utilisateurs finaux. Cela marque le passage du développement et des tests à l'exploitation réelle du système comme un produit opérationnel. Le déploiement comprend plusieur étapes clés, telles que le choix de la stratégie de déploiement, la préparation de l'environnement de production, la migration des données, la configuration du système, la formation des utilisateurs et le lancement officiel du logiciel. @TeachingagileSdlc Un déploiement réussi nécessite une planification minutieuse pour minimiser les interruptions de service et garantir une transition fluide vers le nouvel environnement. Il est aussi important que des procédures de retour en arrière soient en place au cas où des problèmes imprévus surviendraient après le lancement. Dans ce projet, nous nous concentrons sur cette phase de déploiement.
+- #strong[Déploiement]: C'est pendant la phase de déploiement que le logiciel développé est mis à disposition des utilisateurs finaux. Cela marque le passage du développement et des tests à l'exploitation réelle du système comme un produit opérationnel. Le déploiement comprend plusieurs étapes clés, telles que le choix de la stratégie de déploiement, la préparation de l'environnement de production, la migration des données, la configuration du système, la formation des utilisateurs et le lancement officiel du logiciel. @TeachingagileSdlc Un déploiement réussi nécessite une planification minutieuse pour minimiser les interruptions de service et garantir une transition fluide vers le nouvel environnement. Il est aussi important que des procédures de retour en arrière soient en place au cas où des problèmes imprévus surviendraient après le lancement. Dans ce projet, nous nous concentrons sur cette phase de déploiement.
 - #strong[Maintenance]: La phase de maintenance assure la pérennité du système en production, gérant les corrections d'erreurs, les améliorations fonctionnelles et l'adaptation aux évolutions de l'environnement organisationnel.
 
 La maîtrise des différentes phases et de leurs interdépendances constitue un facteur déterminant pour la gestion de projet IT, permettant d'assurer une progression ordonnée depuis l'identification d'un besoin jusqu'à la mise en production et le maintien opérationnel d'un système d'information.
@@ -157,7 +157,7 @@ Terraform @Terraform est un outil open-source d'Infrastructure as Code (IaC) dé
 === Kubernetes
 Une fois l'infrastructure provisionnée, il est nécessaire de disposer d'une plateforme capable d'orchestrer et de gérer le déploiement des applications. Kubernetes @KubernetesWebsite répond à ce besoin en fournissant un système d'orchestration de conteneurs puissant et flexible.
 
-Kubernetes est une plateforme open-source d'orchestration de conteneurs développée initialement par Google et maintenue par la Cloud Native Computing Foundation (CNCF). Kubernetes automatise le déploiement, la mise à l'échelle et la gestion des applications conteneurisées, permettant d'exécuter des systèmes distribués de manière résiliente et efficace. La platemeforme a été choisie car elle permet de gérer des applications complexes composées avec des simples fichiers de configuration YAML, que l'IA générative peut créer automatiquement.
+Kubernetes est une plateforme open-source d'orchestration de conteneurs développée initialement par Google et maintenue par la Cloud Native Computing Foundation (CNCF). Kubernetes automatise le déploiement, la mise à l'échelle et la gestion des applications conteneurisées, permettant d'exécuter des systèmes distribués de manière résiliente et efficace. La plateforme a été choisie car elle permet de gérer des applications complexes composées avec des simples fichiers de configuration YAML, que l'IA générative peut créer automatiquement.
 
 L'intégration de Terraform et Kubernetes constitue ainsi une chaîne complète d'Infrastructure as Code. Cette approche permet d'automatiser entièrement le processus de déploiement comme cela se ferait dans un environnement professionnel.
 
@@ -200,7 +200,7 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 === Modèle GPT-5 (medium reasoning)
 <sec:modèle-gpt-5-medium-reasoning>
 
-Pour ce projet, le modèle d'IA générative utilisé est GPT-5 (medium reasoning), lancé par OpenAi le 7 aoùt 2025. Le choix de ce modèle a été appuyé par plusieurs benchmarks démontrant de ses bonnes performances dans des tâches de programmation et de raisonnement complexe, le rendant parfaitement adapté au développement en mode agentique. En particulier, les benchmarks suivant ont été consultés :
+Pour ce projet, le modèle d'IA générative utilisé est GPT-5 (medium reasoning), lancé par OpenAI le 7 août 2025. Le choix de ce modèle a été appuyé par plusieurs benchmarks démontrant de ses bonnes performances dans des tâches de programmation et de raisonnement complexe, le rendant parfaitement adapté au développement en mode agentique. En particulier, les benchmarks suivant ont été consultés :
 - #strong[Aider Polyglot]: Un benchmark open-source évaluant les capacités de différents modèles LLM à suivre des instructions et à modifier du code correctement sans intervention humaine. GPT-5 (medium reasoning) est classé comme second meilleur modèle dans ce benchmark à la date du 12 décembre 2025. @AiderDocs
 - #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé évaluant la capacité de différents modèles LLM à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. @SweBench
 
@@ -236,6 +236,7 @@ En ce qui concerne la rédaction des prompts, nous avons surtout expérimenté d
 Au niveau des données collectées à analyser, les prompts utilisés, les réponses obtenues par l'IA générative, des captures d'écran ainsi que les fichiers de configuration générés ont été sauvegardés tout au long du projet. Notre protocole est simple, chaque discussion avec l'IA générative est extraite de WindSurf au format Markdown et publiée dans un repository GitHub dédié au projet.
 
 == Critères d'évaluation
+<sec:criteres>
 
 Pour évaluer la pertinence des résultats obtenus avec l'IA générative, les critères suivants ont été utilisés:
 
@@ -409,7 +410,8 @@ Utilisateur professeur :
 
 == Synthèse des resultats
 
-Nous estimons qu'en ce qui concerne les fichiers de déploiement Kubernetes, 95% des fichiers finaux de notre déploiement ont été générés par l'IA générative, tandis que pour les fichiers Terraform, environ 80% des fichiers finaux ont été créés avec l'aide de l'IA. Le reste du code a été écrit manuellement pour corriger des erreurs ou ajuster des configurations spécifiques lorsque nous n'avons pas réussi à obtenir le résultat souhaité avec l'IA générative après plusieurs tentatives. Ainsi, nous estimons qu'environ 87.5% du code total de déploiement a été généré avec l'aide de l'IA.
+
+Nous estimons que 95% des fichiers de déploiement Kubernetes finaux ont été générés par l'IA, contre 80% pour les fichiers Terraform. Le reste du code a été écrit manuellement pour corriger des erreurs ou ajuster des configurations spécifiques lorsque nous n'avons pas réussi à obtenir le résultat souhaité avec l'IA générative après plusieurs tentatives. Ainsi, nous estimons qu'environ 87.5% du code total de déploiement a été généré avec l'aide de l'IA.
 
 #table(
   columns: (1fr, 3fr),
@@ -420,11 +422,33 @@ Nous estimons qu'en ce qui concerne les fichiers de déploiement Kubernetes, 95%
   [Total], [87.5%]
 )
 
+=== Comparaison avec une approche traditionnelle
+
 La comparaison entre l'approche par IA générative et une approche traditionnelle révèle des différences dans la structure du code produit.
 
-- #strong[Kubernetes]: L'IA générative a produit une architecture modulaire avec génération de multiples fichiers séparés respectant les conventions de la communauté : namespaces dédiés, fichiers kustomization pour la gestion de configuration, secrets pour les données sensibles, et services pour l'exposition des applications. Sans connaissance préalable de Kubernetes, une approche manuelle aurait abouti à une structure plus monolithique avec moins de séparation des responsabilités et un respect moins rigoureux des bonnes pratiques établies.
-- #strong[Terraform]: Pour Terraform, l'IA a généré du code souvent fonctionnel mais présentant des répétitions notables pour des ressources similaires où seuls les noms diffèrent. Une approche manuelle traditionnelle aurait privilégié la modularisation avec abstraction et paramètres pour éviter cette duplication, aboutissant à un code plus maintenable et évolutif.
-- #strong[En général]: L'IA générative a permis de produire rapidement du code fonctionnel, mais avec quelques imperfections nécessitant des ajustements manuels.
+- *Kubernetes*: L'IA générative a produit une architecture modulaire avec génération de multiples fichiers séparés respectant les conventions de la communauté. Sans connaissance préalable de Kubernetes, une approche manuelle aurait abouti à une structure plus monolithique avec moins de séparation des responsabilités et un respect moins rigoureux des bonnes pratiques établies.
+- *Terraform*: L'IA générative a généré du code présentant des répétitions notables pour des ressources similaires où seuls les noms diffèrent. Une approche manuelle traditionnelle aurait privilégié la modularisation avec abstraction et paramètres pour éviter cette duplication.
+
+=== Évaluation selon les critères définis
+
+Cette section évalue les résultats obtenus selon les cinq critères définis dans la méthodologie (@sec:criteres).
+
+#strong[Fonctionnalité :]
+L'infrastructure déployée est pleinement fonctionnelle. L'application OpenDidac est accessible et utilisable avec toutes ses fonctionnalités. Le déploiement Kubernetes sur AWS permet une exploitation complète du système. Une intervention manuelle mineure a été nécessaire.
+
+#strong[Respect des bonnes pratiques :]
+- *Kubernetes*: l'IA a systématiquement respecté les bonnes pratiques de la communauté (namespaces, Kustomize, Secrets, health checks, services). 
+- *Terraform*: Le code généré présentait des lacunes significatives : absence de modularisation, duplication excessive, commentaires inadéquats, et manque de validation des variables. Une refactorisation manuelle a été nécessaire.
+
+#strong[Productivité :]
+- *Kubernetes*: Gain de temps net, avec du code généré rapidement et de bonne qualité.
+- *Terraform*: Processus chronophage, avec plus de 10-15 itérations nécessaires et corrections manuelles, aboutissant à une perte de temps globale par rapport à une approche manuelle directe.
+
+#strong[Sécurité :]
+L'infrastructure respecte les exigences de base : gestion des secrets via Kubernetes Secrets, isolation des composants dans un namespace dédié, et configuration réseau appropriée. Cependant, aucune analyse de sécurité approfondie n'a été proposée (scan de vulnérabilités, audit des permissions IAM AWS, ...).
+
+#strong[Coût :]
+Le coût a été de 15 USD car nous avons finalement dépassé le quota gratuit de 25 crédits mensuels en configurant Terraform. Ce coût est raisonnable mais exploserait pour des projets plus complexes nécessitant beaucoup de crédits et plusieurs comptes.
 
 = Discussion
 == Bénéfices observés
@@ -475,7 +499,7 @@ L'utilisation de l'IA générative dans le processus de déploiement IT a apport
 == Défis rencontrés
 #strong[Pour Kubernetes :]
 - *Fusion des 3 parties difficile*: L'IA a eu du mal à fusionner les trois parties du déploiement (PostgreSQL, Keycloak, OpenDidac) en un seul déploiement cohérent. Chaque partie fonctionnait bien individuellement, mais lorsque nous avons demandé à l'IA de les combiner, elle a eu du mal à gérer les dépendances entre les composants, notamment la connexion d'OpenDidac à Keycloak.
-- *Compréhension et direction générale*: Quand nous étions bloqué sur cette fusion, nous étions obligés de comprendre l'architecture de communication entre conteneurs, pour comprendre les erreurs liée à Keycloak. Comme le LLM tournait en rond, nous avons du choisir une autre direction, c'est à dire de revenir sur une ancienne version de l'application qui utilisait une instance Keycloak en local. Pour choisir cette direction, nous avons du lire le README, qui mentionnait clairement que Keycloak en local ne pouvait plus fonctionner. Nous aurions gagné du temps si le LLM avait également lu le README et s'il nous avait tout de suite demandé de faire une choix parmi une liste d'options possibles.
+- *Compréhension et direction générale*: Quand nous étions bloqué sur cette fusion, nous étions obligés de comprendre l'architecture de communication entre conteneurs, pour comprendre les erreurs liée à Keycloak. Comme le LLM tournait en rond, nous avons du choisir une autre direction, c'est à dire de revenir sur une ancienne version de l'application qui utilisait une instance Keycloak en local (commit 732487f98226c37825cbe600be6cdf59f7289e18). Pour choisir cette direction, nous avons du lire le README, qui mentionnait clairement que Keycloak en local ne pouvait plus fonctionner. Nous aurions gagné du temps si le LLM avait également lu le README et s'il nous avait tout de suite demandé de faire une choix parmi une liste d'options possibles.
 - *Verbosité des réponses*: Durant les phrases de réflexions et de résultats final, le LLM génère beaucoup de texte, souvent très verbeux. Une partie du texte est complètement inutile pour les humains. Par exemple, les "pensées" du LLM peuvent être très longues et inutiles: #quote("Je vais mettre à jour le fichier terraform.tfvars.json pour adopter la nouvelle structure d’objet cluster, puis je mettrai à jour la todo list pour marquer la revue des tfvars comme terminée."). Au milieu des dizaines de lignes de texte, certaines informations ou choix importants sont facilement loupés par une lecture humaine. On est très loin d'un expert coach qui peut se concentrer sur les décisions à prendre, à rendre l'information concise et aider à avancer à débloquer les problèmes un par un.
 - *Direction vague*: Quand il y a des problèmes et que l'humain n'a pas pris de décision claire sur la direction à prendre, le LLM navigue dans différentes directions à la fois et ne reste pas concentré sur une seule. 
 
@@ -565,7 +589,7 @@ Ce projet démontre concrètement comment l'IA générative peut être intégré
 
 == Perspectives
 Comme indiqué précédemment, le domaine de l’IA est vaste et en évolution rapide, rendant impossible un inventaire exhaustif de toutes les pistes d’exploration. Si le projet devait se poursuivre, voici les sujets que nous étudierions en premier.
-- *Explorer une intégration avancée des LLM avec des serveurs MCP et une flotte d'agents*. Cette option nous permettrait d'offir une boucle de feedback sur le fonctionnement de l'infrastructure au LLM, lui permettre d'inspecter l'état d'un cluster Kubernetes par lui-même ou encore de bénéficier de revues de code d'autres LLM en parallèle. Nous pourrions ainsi, avec un travail de configuration plus important en amont, avoir une orchestration plus fine du travail des LLM.
+- *Explorer une intégration avancée des LLM avec des serveurs MCP et une flotte d'agents*. Cette option nous permettrait d'offrir une boucle de feedback sur le fonctionnement de l'infrastructure au LLM, lui permettre d'inspecter l'état d'un cluster Kubernetes par lui-même ou encore de bénéficier de revues de code d'autres LLM en parallèle. Nous pourrions ainsi, avec un travail de configuration plus important en amont, avoir une orchestration plus fine du travail des LLM.
 - *Approfondir l’usage des rules* pour obtenir des résultats plus précis et mieux contrôlés. La longueur, le style et le type de règles à inclure ont probablement un impact sur leur efficacité.
 - *Travailler le prompt engineering* pour réduire le nombre d’itérations et améliorer la qualité du code généré. Tout comme les rules, la manière d'écrire nos prompts a probablement été étudié et comparé. Nous pourrions continuer les recherches existantes en approfondissant et adaptant les astuces pour le domaine du déploiement Cloud.
 
