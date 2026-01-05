@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Question" ADD COLUMN     "defaultPoints" DOUBLE PRECISION NOT NULL DEFAULT 4;
