@@ -62,9 +62,11 @@
 
 #pagebreak()
 
-= Resume
+= Résumé
 
 #pagebreak()
+
+#set heading(numbering: "1.")
 
 = Introduction
 == Contexte
@@ -72,13 +74,13 @@ La gestion de projets informatiques nécessite des méthodologies structurées p
 
 #figure(image("images/plc.png", width: 75%), caption: [ Position du SDLC dans le PLC ])
 
- Le cycle SDLC établit une séquence logique d'activités de développement organisées en phases distinctes. Plusieurs variantes du SDLC existent mais nous allons nous concentrer sur la version en 7 phases, puisque ce rapport porte sur l'intégration de l'IA générative dans le processus de déploiement IT. Les 7 phases du SDLC sont les suivantes: la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), le test (testing), le déploiement (deployment) et la maintenance (maintenance) @SDLCphases).
+ Le cycle SDLC établit une séquence logique d'activités de développement organisées en phases distinctes. Plusieurs variantes du SDLC existent, avec un nombre variable de phases, selon la granularité recherchée. Puisque ce rapport porte sur l'intégration de l'IA générative dans la phase de déploiement du SDLC, nous adoptons le modèle en 7 phases, afin de pouvoir mettre en évidence celle-ci. Les 7 phases du SDLC sont les suivantes: la planification (planning), l'analyse (analysis), la conception (design), l'implémentation (implementation), le test (testing), le déploiement (deployment) et la maintenance (maintenance) @SDLCphases.
 
 #figure(image("images/sdlc.png", width: 55%), caption: [ SDLC en 7 phases ])
 
 Chaque phase du SDLC a un but bien précis. @SDLCphases @CourseBookITProMan
 
-- #strong[Planification]: Cette phase dépend fortement des livrables précédents et peut se décliner selon trois situations : une planification complète et imposée par le client (date, budget et fonctionnalités), une absence de planification préalable nécessitant une proposition complète du prestataire IT, ou une situation intermédiaire où seul le périmètre fonctionnel est défini. Cette phase distingue les projets feature-driven (flexibilité temporelle) des projets date-driven (flexibilité fonctionnelle).
+- #strong[Planification]: Cette phase dépend fortement des livrables précédents du PLC et peut se décliner selon trois situations : une planification complète et imposée par le client (date, budget et fonctionnalités), une absence de planification préalable nécessitant une proposition complète du prestataire IT, ou une situation intermédiaire où seul le périmètre fonctionnel est défini. Cette phase distingue les projets feature-driven (flexibilité temporelle) des projets date-driven (flexibilité fonctionnelle).
 - #strong[Analyse]: L'analyse englobe l'analyse du business, des utilisateurs, des technologies, des travaux antérieurs et de la faisabilité du projet. Cette phase produit la Software Requirements Specification (SRS), document décrivant précisément les exigences fonctionnelles et non-fonctionnelles..
 - #strong[Conception]: La conception définit l’architecture du système par décomposition en composants, précise interfaces, données et choix technologiques, et fournit une spécification détaillée du système.
 - #strong[Implémentation]: L'implémentation concrétise cette architecture par le développement, l'intégration, les tests, l'installation du système, ainsi que la formation et la documentation nécessaires à son utilisation.
@@ -86,11 +88,11 @@ Chaque phase du SDLC a un but bien précis. @SDLCphases @CourseBookITProMan
 - #strong[Déploiement]: C'est pendant la phase de déploiement que le logiciel développé est mis à disposition des utilisateurs finaux. Cela marque le passage du développement et des tests à l'exploitation réelle du système comme un produit opérationnel. Le déploiement comprend plusieur étapes clés, telles que le choix de la stratégie de déploiement, la préparation de l'environnement de production, la migration des données, la configuration du système, la formation des utilisateurs et le lancement officiel du logiciel. @TeachingagileSdlc Un déploiement réussi nécessite une planification minutieuse pour minimiser les interruptions de service et garantir une transition fluide vers le nouvel environnement. Il est aussi important que des procédures de retour en arrière soient en place au cas où des problèmes imprévus surviendraient après le lancement. Dans ce projet, nous nous concentrons sur cette phase de déploiement.
 - #strong[Maintenance]: La phase de maintenance assure la pérennité du système en production, gérant les corrections d'erreurs, les améliorations fonctionnelles et l'adaptation aux évolutions de l'environnement organisationnel.
 
-La maîtrise de ces phases et de leurs interdépendances constitue un facteur déterminant pour la gestion de projet IT, permettant d'assurer une progression ordonnée depuis l'identification d'un besoin jusqu'à la mise en production et le maintien opérationnel d'un système d'information.
+La maîtrise des différentes phases et de leurs interdépendances constitue un facteur déterminant pour la gestion de projet IT, permettant d'assurer une progression ordonnée depuis l'identification d'un besoin jusqu'à la mise en production et le maintien opérationnel d'un système d'information.
 
 == Objectif du rapport // ce que l'ia peut faire
 
-L'intégration de l'IA générative dans le processus de déploiement peut offrir plusieurs avantages, comme par exemple:
+L'objectif principal de ce rapport est d'explorer comment l'intégration de l'IA générative dans le processus de déploiement peut offrir plusieurs avantages, comme par exemple:
 
 - #strong[Automatisation de la création des fichiers de déploiement]: Beaucoup d'outils permettant de déployer des applications nécessitent la création de fichiers de configuration spécifiques (Docker Compose, Kubernetes, Terraform etc.). L'IA générative peut automatiser la création de ces fichiers en fonction des spécifications du projet, réduisant ainsi le temps et les erreurs humaines.
 - #strong[Analyse automatique des environnements]: Le déploiement varie en fonction des providers cloud, des configurations réseau et des contraintes de sécurité. L'IA générative peut analyser automatiquement l'environnement cible et adapter les fichiers ou scripts de déploiement en conséquence.
@@ -98,18 +100,18 @@ L'intégration de l'IA générative dans le processus de déploiement peut offri
 - #strong[Automatisation de la documentation]: La documentation du code et des marches à suivre est essentielle pour l'exploitation et la maintenance des systèmes. L'IA générative peut automatiser la création de cette documentation technique, permettant de gagner du temps et d'assurer que tous les membres de l'équipe disposent d'informations à jour.
 - #strong[Optimisation des processus de déploiement]: L'IA peut analyser les processus de déploiement existants et suggérer des améliorations pour les rendre plus efficaces, en identifiant les goulots d'étranglement et en proposant des stratégies d'optimisation. L'IA peut aussi aider à concevoir des stratégies de déploiement qui minimisent le temps d'indisponibilité.
 
-Dans ce projet, nous avons choisi de nous concentrer sur le déploiement cloud sur AWS d'une application web déjà existante en utilisant Kubernetes et Terraform. Ainsi, nous avons surtout exploré comment l'IA générative peut assister dans la création des fichiers de déploiement, l'adaptation aux environnements cloud, ainsi que l'aide à la résolution des problèmes. Ce rapport présente donc les outils utilisés, les résultats de cette exploration, les bénéfices observés, les défis rencontrés, ainsi que des recommandations pour l'intégration future de l'IA générative dans les processus de déploiement IT.
+Dans ce projet, nous avons choisi de nous concentrer sur le déploiement cloud sur AWS d'une application web déjà existante en utilisant Kubernetes et Terraform. Ainsi, nous avons surtout exploré comment l'IA générative peut assister dans la création des fichiers de déploiement, dans l'adaptation aux environnements cloud, ainsi que dans l'aide à la résolution des problèmes. Ce rapport présente donc les outils utilisés, les résultats de cette exploration, les bénéfices observés, les défis rencontrés, ainsi que des recommandations pour l'intégration future de l'IA générative dans les processus de déploiement IT.
 
 == Problématique // les problèmes
-Le déploiement est une étape dans le SDLC qui peut être complexe et où plusieurs défis peuvent compromettre la mise en production. En voici certains:
-- #strong[Complexité des environnements hétérogènes]: Les systèmes sont souvent déployés sur des infrastructures variées (cloud multi-fournisseurs, hybride) avec des configurations et contraintes différentes, augmentant le risque d'incompatibilités et d'erreurs.
-- #strong[Gestion des fichiers de configuration]: La création et la gestion des fichiers de configuration, qui est une étape cruciale, peut être fastidieuses, chronophages et sujettes aux erreurs. 
+Le déploiement est une étape du SDLC qui peut être complexe et où plusieurs défis peuvent compromettre la mise en production. En voici certains:
+- #strong[Complexité des environnements hétérogènes]: Les systèmes sont souvent déployés sur des infrastructures variées (différents fournisseurs ou types) avec des configurations et contraintes différentes, augmentant le risque d'incompatibilités et d'erreurs.
+- #strong[Gestion des fichiers de configuration]: La création et la gestion des fichiers de configuration, qui est une étape cruciale, peut être fastidieuse, chronophages car contenant beaucoup de boilerplate code, et sujettes aux erreurs. 
 - #strong[Gestion des dépendances et des versions]: Les systèmes modernes comportent de nombreuses dépendances (bibliothèques, frameworks, services externes) dont les incompatibilités de versions peuvent provoquer des échecs de déploiement difficiles à diagnostiquer. 
 - #strong[Gestion des erreurs et diagnostics]: Le déploiement peut échouer pour diverses raisons, et la détection rapide des erreurs ainsi que leur résolution sont essentielles.
-- #strong[Documentation chronophage]: L'écriture et la mise à jour de la documentation technique liée au déploiement sont souvent négligées car chronophage. Cependant, une documentation inadéquate ou obsolète complique la compréhension du processus de déploiement, rendant difficile la maintenance et les mises à jour ultérieures.
+- #strong[Documentation chronophage]: L'écriture et la mise à jour de la documentation technique liée au déploiement sont souvent négligées car chronophages et peu engageantes. Cependant, une documentation inadéquate ou obsolète complique la compréhension du processus de déploiement, rendant difficile la maintenance et les mises à jour ultérieures.
 - #strong[Interruption de service]: Le déploiement nécessite souvent des interruptions de service impactant la disponibilité du système, particulièrement critique pour les systèmes en production 24/7.
 
-Ces problématiques semblent être des cas de figure où l'IA générative peut apporter des solutions efficaces. Le tableau ci-dessous résume les défis du déploiement et les solutions potentielles offertes par l'IA générative.
+Ces problématiques semblent être des cas de figure où l'IA générative peut potentiellementapporter des solutions efficaces. Le tableau ci-dessous résume les défis du déploiement et les solutions potentielles offertes par l'IA générative.
 
 #table(
   columns: (1fr, 1fr),
@@ -124,35 +126,35 @@ Ces problématiques semblent être des cas de figure où l'IA générative peut 
 
 = Méthodologie
 == Approche pédagogique
-Dans le cadre de ce projet, l'approche pédagogique adoptée est celle de la classe inversée. De manière générale, le concept est que les élèves prennent connaissance du sujet du cours en dehors des heures de classe, afin de consacrer le temps en classe à des activités pratiques, des discussions et des travaux collaboratifs engageants. @ClasseInversse Dans ce projet, la classe inversée est surtout mise en oeuvre à travers des présentations par les étudiants eux-mêmes, inversant ainsi les rôles traditionnels entre enseignants et étudiants. En effet, les étudiants se voient attribuer un thème lié au SDLC ou au PLC qu'ils doivent étudier afin de le présenter à leurs pairs et aux enseignants lors de sessions dédiées. En particulier, pour ce projet, les étudiants sont chargés d'explorer l'intégration de l'IA générative dans le thème lié aux projets IT qui leur a été assigné. Le but est de tester et évaluer comment l'IA générative permet d'améliorer l'efficacité, la qualité et la gestion des projets IT à chaque étape de leur cycle de vie. Le côté pratique est mis en avant à travers des démonstrations des résultats obtenus, des analyses critiques et des discussions sur les bénéfices et défis rencontrés. Le contenu des présentations de tous les étudiants fait partie intégrante du cours, puisqu'il peut apparaître dans l'examen final.
+Dans le cadre de ce projet, l'approche pédagogique adoptée est celle de la classe inversée. De manière générale, le concept est le suivant: les élèves prennent connaissance du sujet du cours en dehors des heures de classe, afin de consacrer le temps en classe à des activités pratiques, des discussions et des travaux collaboratifs engageants. @ClasseInversse Dans ce projet, la classe inversée est surtout mise en oeuvre à travers des présentations faites par les étudiants eux-mêmes, inversant ainsi les rôles traditionnels entre enseignants et étudiants. En effet, les étudiants se voient attribuer un thème lié au SDLC ou au PLC qu'ils doivent étudier afin de le présenter à leurs pairs et aux enseignants lors de sessions dédiées. En particulier, pour ce projet, les étudiants sont chargés d'explorer l'intégration de l'IA générative dans le thème lié aux projets IT qui leur a été assigné. Le but est de tester et évaluer comment l'IA générative permet d'améliorer l'efficacité, la qualité et la gestion des projets IT à chaque étape de leur cycle de vie. Le côté pratique est mis en avant à travers des démonstrations des résultats obtenus, des analyses critiques et des discussions sur les bénéfices et défis rencontrés. Le contenu des présentations de tous les étudiants fait partie intégrante du cours, puisqu'il peut apparaître dans l'examen final.
 
 == Outils et technologies utilisés
 <outils-et-technologies-utilises>
 === OpenDidac
 <opendidac>
-Notre but étant de s'intéresser à la phase de déploiement, nous avons tout d'abord sélectionné une application web à déployer. Nous avons choisi l'application web `OpenDidac`, qui est une plateforme open-source de gestion d'évaluation en ligne développée par l'HEIG-VD @OpendidacGithub. En particulier, cette application permet aux enseignants de concevoir des questionnaires, aux étudiants de se connecter et de répondre aux évaluations, et enfin de récupérer les réponses aux questions pour analyse. Les questionnaires permettent plusieurs types de questions: vrai/faux, QCM, questions ouvertes, questions avec exécution de code ou encore des requêtes de bases de données. L'architecture de l'application est la suivante :
+Notre but étant d'étudier la phase de déploiement, nous avons tout d'abord sélectionné une application web existante à déployer. Nous avons choisi l'application web `OpenDidac`, qui est une plateforme open-source de gestion d'évaluation en ligne développée par l'HEIG-VD @OpendidacGithub. En particulier, cette application permet aux enseignants de concevoir des questionnaires, aux étudiants de se connecter et de répondre aux évaluations, et enfin de récupérer les réponses aux questions pour analyse. Les questionnaires permettent plusieurs types de questions: vrai/faux, QCM, questions ouvertes, questions avec exécution de code ou encore des requêtes de bases de données. L'architecture de l'application est la suivante :
 - #strong[Frontend]: Développé en Typescript avec le framework Next.js 14 pour React.
 - #strong[Backend]: Développé en Typescript avec le framework Next.js API Routes.
 - #strong[Base de données]: PostgreSQL avec modélisation gérée par l'ORM Prisma.
 - #strong[Authentification]: Gestion des utilisateurs et des sessions avec NextAuth.js et keycloak.
 - #strong[Conteneurisation]: Utilisation de Docker pour la création d'images et la gestion des conteneurs.
 
-Le but de ce projet est donc de déployer cette application web en utilisant différentes technologies d'infrastructure, en s'appuyant sur l'IA générative pour automatiser le processus de déploiement.
+Le but de ce projet est donc de déployer cette application web en utilisant différentes technologies d'infrastructure, en s'appuyant sur l'IA générative pour automatiser le processus de déploiement. Le déploiement doit couvrir trois composants distincts: la base de données PostgreSQL, le serveur d'identité Keycloak, et l'application web OpenDidac (frontend et backend) elle-même.
 
 === Terraform
 Le déploiement d'applications implique nécessairement la gestion d'une infrastructure sous-jacente capable de les héberger et de les exécuter. L'infrastructure peut prendre différentes formes selon les besoins : serveurs physiques, machines virtuelles, conteneurs ou services cloud. Cette infrastructure doit être provisionnée, configurée et maintenue de manière cohérente et reproductible, ce qui représente un défi majeur dans les environnements de production modernes.
 
-Terraform est un outil open-source d'Infrastructure as Code (IaC) développé par HashiCorp qui permet de définir et de provisionner l'infrastructure informatique de manière déclarative. Contrairement aux approches impératives traditionnelles où l'on spécifie les étapes à suivre pour créer l'infrastructure, Terraform adopte une approche déclarative où l'on décrit l'état désiré de l'infrastructure, et l'outil se charge de déterminer les actions nécessaires pour atteindre cet état. Grâce à cette approche, utiliser une IA générative pour créer les fichiers de configuration Terraform permet d'automatiser le processus de provisionnement de l'infrastructure.
+Terraform @Terraform est un outil open-source d'Infrastructure as Code (IaC) développé par HashiCorp qui permet de définir et de provisionner l'infrastructure informatique de manière déclarative. Contrairement aux approches impératives traditionnelles où l'on spécifie les étapes à suivre pour créer l'infrastructure, Terraform adopte une approche déclarative où l'on décrit l'état désiré de l'infrastructure, et l'outil se charge de déterminer les actions nécessaires pour atteindre cet état. Grâce à cette approche, utiliser une IA générative pour créer les fichiers de configuration Terraform permet d'automatiser le processus de provisionnement de l'infrastructure. Dans ce projet, Terraform est utilisé pour provisionner un cluster Kubernetes sur AWS (Amazon Web Services), qui servira de plateforme d'hébergement pour l'application OpenDidac.
 
 === Kubernetes
-Une fois l'infrastructure provisionnée, il est nécessaire de disposer d'une plateforme capable d'orchestrer et de gérer le déploiement des applications. Kubernetes répond à ce besoin en fournissant un système d'orchestration de conteneurs puissant et flexible.
+Une fois l'infrastructure provisionnée, il est nécessaire de disposer d'une plateforme capable d'orchestrer et de gérer le déploiement des applications. Kubernetes @KubernetesWebsite répond à ce besoin en fournissant un système d'orchestration de conteneurs puissant et flexible.
 
 Kubernetes est une plateforme open-source d'orchestration de conteneurs développée initialement par Google et maintenue par la Cloud Native Computing Foundation (CNCF). Kubernetes automatise le déploiement, la mise à l'échelle et la gestion des applications conteneurisées, permettant d'exécuter des systèmes distribués de manière résiliente et efficace. La platemeforme a été choisie car elle permet de gérer des applications complexes composées avec des simples fichiers de configuration YAML, que l'IA générative peut créer automatiquement.
 
-L'intégration de Terraform et Kubernetes constitue ainsi une chaîne complète d'Infrastructure as Code. Cette approche permet d'automatiser entièrement le processus de déploiement comme se ferait dans un environnement professionnel.
+L'intégration de Terraform et Kubernetes constitue ainsi une chaîne complète d'Infrastructure as Code. Cette approche permet d'automatiser entièrement le processus de déploiement comme cela se ferait dans un environnement professionnel.
 
 === Windsurf
-Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf @Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération intégrant nativement des capacités d'intelligence artificielle générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet grâce à un accès complet au contexte. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. Pour atteindre le résultat souhaité, l'utilisateur n'a qu'à formuler une demande en langage naturel dans le panneau de conversation intégré, et l'IA se charge de déterminer les actions nécessaires pour accomplir la tâche.
+Pour intégrer l'IA générative dans notre processus de déploiement, nous avons utilisé Windsurf @Windsurf. Windsurf est un environnement de développement intégré (IDE) de nouvelle génération, intégrant nativement des capacités d'IA générative pour assister les développeurs tout au long du cycle de développement logiciel. En particulier, la fonctionnalité distinctive de Windsurf réside dans son mode Agent (appelé Code), qui permet à l'IA d'agir de manière autonome sur le code et le projet grâce à un accès complet au contexte. En mode Agent, l'IA ne se limite pas à suggérer du code ou répondre à des questions, elle peut analyser l'architecture du projet, proposer des modifications dans les fichiers, créer des fichiers, refactoriser du code existant, générer des tests, créer de la documentation ou encore exécuter des commandes dans le terminal intégré à l'IDE. Pour atteindre le résultat souhaité, l'utilisateur n'a qu'à formuler une demande en langage naturel dans le panneau de conversation intégré, et l'IA se charge de déterminer les actions nécessaires pour accomplir la tâche.
 
 #figure(image("images/windsurf_chat.png"), caption: [ Aperçu de l'interface de Windsurf avec les fichiers et le code à gauche, et la conversation et les configurations à droite])
 
@@ -165,7 +167,7 @@ Un plan gratuit incluant 25 crédits par mois est proposé, permettant aux déve
 
 #figure(image("images/windsurf_payment_plan.png", width: 85%), caption: [ Plans de paiements de Windsurf, en décembre 2025 ])
 
-Sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows @UsingWindsurfRulesWorkflowsAndMemories. Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
+L'utilisation de WindSurd nécessite quelques précautions. En effet, sans contraintes, l'IA peut produire du code non conforme aux standards de l'entreprise, introduire des vulnérabilités de sécurité ou utiliser des patterns incompatibles avec l'architecture existante. Face aux défis de qualité et de cohérence du code généré par l'IA, Windsurf propose deux mécanismes de contrôle : les rules et les workflows @UsingWindsurfRulesWorkflowsAndMemories. Les rules garantissent que le code généré respecte les conventions établies, tandis que les workflows assurent la reproductibilité et la fiabilité des processus critiques comme les déploiements. Ces outils permettent ainsi de maintenir un contrôle qualité tout en bénéficiant de la productivité apportée par l'IA.
 
 Les rules permettent de définir des directives que l'IA doit suivre lors de la génération de code. Ces règles peuvent être configurées à deux niveaux @UsingWindsurfRulesWorkflowsAndMemories :
 - #strong[Global Rules]: Applicables à tous les projets de l'utilisateur, elles définissent des préférences personnelles comme le style de code ou les conventions de nommage.
@@ -188,11 +190,11 @@ Les workflows, quant à eux, permettent d'automatiser des tâches répétitives 
 )
 
 === Modèle GPT-5 (medium reasoning)
-<modèle-gpt-5-medium-reasoning>
+<sec:modèle-gpt-5-medium-reasoning>
 
 Pour ce projet, le modèle d'IA générative utilisé est GPT-5 (medium reasoning), lancé par OpenAi le 7 aoùt 2025. Le choix de ce modèle a été appuyé par plusieurs benchmarks démontrant de ses bonnes performances dans des tâches de programmation et de raisonnement complexe, le rendant parfaitement adapté au développement en mode agentique. En particulier, les benchmarks suivant ont été consultés :
 - #strong[Aider Polyglot]: Un benchmark open-source évaluant les capacités de différents modèles LLM à suivre des instructions et à modifier du code correctement sans intervention humaine. GPT-5 (medium reasoning) est classé comme second meilleur modèle dans ce benchmark à la date du 12 décembre 2025. @AiderDocs
-- #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé dans l'évaluation des modèles LLM pour leur capacités à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. @SweBench
+- #strong[SWE (Software Engineering Evaluation)]: Un benchmark spécialisé évaluant la capacité de différents modèles LLM à résoudre des issues GitHub liées à la programmation. C'est un benchmark qui mesure le raisonnement agentique. GPT-5 (medium reasoning) a surpassé plusieurs autres modèles, arrivant en cinquième position à la date du 12 décembre 2025. @SweBench
 
 #figure(
   grid(
@@ -210,27 +212,32 @@ Plusieurs modèles ont de meilleurs résultats dans ces benchmarks, mais ils ne 
 
 Ce projet a été réalisé par trois étudiants de l'orientation Computer Science du Master of Science in Engineering (MSE) de la HES-SO. Les membres sont tous des ingénieurs détenteurs d'un Bachelor of Science en informatique et systèmes de communication avec une orientation en informatique logicielle, délivré par la HEIG-VD. Les participants sont Eva Ray, Samuel Roland et Massimo Stefani.
 
-Les trois membres ont suivi un cours de Cloud Computing durant leur Bachelor et suivent actuellement une version avancée de ce cours dans le cadre de leur Master. Ainsi, ils possèdent tous des connaissances de base en déploiement d'applications Cloud. Cependant, Samuel et Eva sont débutants en Kubernetes et Terraform, tandis que Massimo a une solide expérience de ces outils qu'il a utilisés dans des projets professionnels antérieurs, ainsi que son travail de Bachelor.
+Les trois membres ont suivi un cours de Cloud Computing durant leur Bachelor et suivent actuellement une version avancée de ce cours dans le cadre de leur Master. Ainsi, ils possèdent tous des connaissances de base en déploiement d'applications Cloud. Cependant, Samuel et Eva sont débutants en Kubernetes et Terraform, tandis que Massimo a une solide expérience de ces outils qu'il a utilisés dans des projets professionnels antérieurs, ainsi que dans le cadre de son travail de Bachelor.
 
 Pour ce projet, le travail a été divisé en trois parties, de la manière suivante :
 - Eva Ray : Déploiement Kubernetes de la base de données PostgreSQL et de keycloak
 - Samuel Roland : Déploiement Kubernetes de l'application web d'OpenDidac
 - Massimo Stefani : Déploiement Terraform de l'infrastructure Kubernetes sur AWS
 
-== Collecte de données
-TODO ? retirer la section??
+== Collecte de données // Comment les données ont été recueillies (internet, observations, etc.).
+
+Pour nous informer sur l'utilisation de l'IA générative dans le déploiement IT, nous avons parcouru plusieurs articles académiques disponibles sur internet, en utilisant des plateformes comme arXiv.org pour accéder à des publications récentes (voir @sec:references). En ce qui concerne l'utilisation de Windsurf, nous avons en partie consulté des blogs spécialisés et en partie exploré directement l'outil par nous-mêmes. Nous avons également consulté des benchmarks disponibles sur internet comparant les performances des modèles d'IA générative dans des tâches de programmation, afin de choisir le modèle le plus adapté pour notre projet (voir @sec:modèle-gpt-5-medium-reasoning). 
+
+En ce qui concerne la rédaction des prompts, nous avons surtout expérimenté de manière itérative, en testant différentes formulations et en ajustant les instructions données à l'IA générative pour obtenir les résultats souhaités, si besoin. Certaines recommandations entendues dans des podcasts spécialisés sur l'IA générative ont aussi été testées.
+
+Au niveau des données collectées à analyser, les prompts utilisés, les réponses obtenues par l'IA générative, des captures d'écran ainsi que les fichiers de configuration générés ont été sauvegardés tout au long du projet. Notre protocole est simple, chaque discussion avec l'IA générative est extraite de WindSurf au format Markdown et publiée dans un repository GitHub dédié au projet.
 
 == Critères d'évaluation
 
-Pour évaluer la pertinence des résultats, les critères suivants ont été utilisés:
+Pour évaluer la pertinence des résultats obtenus avec l'IA générative, les critères suivants ont été utilisés:
 
-- *Fonctionnel*: Est-ce que l'infrastructure déployée est fonctionnelle ? Est-ce que l'application peut être pleinement utilisée ?
-- *Respect des bonnes pratiques*: Est-ce que les bonnes pratiques relatives à la technologie principale sont respectées ?
-- *Productivité*: Est-ce qu'utiliser l'IA nous a fait gagner ou perdre du temps au total ?
-- *Sécurité*: Est-ce que l'infrastructure générée respecte tous les prérequis pour la considérer comme sécurisée ? Par exemple: les mots de passe en clair, les règles de pare-feu, les permissions définies, ... Nous n'avons pas cherché à déterminer la sécurité de l'usage de l'IA avec Windsurf.
-- *Prix*: Est-ce que notre usage ou notre abonnement a engendré un coût élevé ?
+- *Fonctionnalité*: Est-ce que l'infrastructure déployée est fonctionnelle ? Est-ce que l'application peut être pleinement utilisée ?
+- *Respect des bonnes pratiques*: Est-ce que les bonnes pratiques et recommandations associées aux technologies utilisées sont respectées ?
+- *Productivité*: utilisation de l’IA a-t-elle entraîné un gain ou une perte de temps globale ?
+- *Sécurité*: Est-ce que l'infrastructure générée respecte les exigences minimales de sécurité (gestion des secrets, configuration réseau, permissions, etc.) L’évaluation ne porte pas sur la sécurité de l'usage de Windsurf lui-même.
+- *Coût*: Est-ce que l’utilisation des outils et services d'IA générative a engendré un coût élevé ?
 
-= Références
+= Références <sec:references>
 TODO: renommer la section ?
 
 == Exploration des outils d'IA pour le déploiement IT
@@ -252,7 +259,7 @@ Ces deux articles nous mènent à la conclusion que l'IA générative a un poten
 
 == Benchmarks de comparaison des modèles d'IA générative
 
-Quelques benchmarks récents comparent les performances des modèles d'IA générative pour des tâches de programmation et nous ont aidé à choisir le modèle le plus adapté pour notre projet (voir la section <modèle-gpt-5-medium-reasoning>):
+Quelques benchmarks récents comparent les performances des modèles d'IA générative pour des tâches de programmation et nous ont aidé à choisir le modèle le plus adapté pour notre projet (voir @sec:modèle-gpt-5-medium-reasoning):
 - #strong[Aider Polyglot] @AiderDocs
 - #strong[SWE (Software Engineering Evaluation)] @SweBench
 - #strong[Vellum] @WwwBestLlmForCoding: Leaderboard regroupant plusieurs benchmarks pour comparer les modèles d'IA générative dans divers tâches et domaines.
